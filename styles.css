@@ -1,0 +1,184 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* End of reset */
+
+
+
+
+:root {  /* setting custom variables for easy uniform colors and fonts, and for easy changing through javascript */
+    --white: #FFFFFF;
+    --black: #000000;
+    --gray1: #F8F8F8;
+    --gray2: #E0E0E0;
+    --gray3: #C0C0C0;
+    --gray4: #999999;
+    --gray5: #666666;
+    --gray6: #333333;
+    --gray7: #111111;
+
+    --red1: #FF0000;
+    --red2: #FF6347;
+    --red3: #B22222;
+    --red4: #8B0000;
+
+    --orange1: #FFA500;
+    --orange2: #FF8C00;
+    --orange3: #FF7F50;
+
+    --yellow1: #FFFF00;
+    --yellow2: #FFD700;
+    --yellow3: #F0E68C;
+
+    --green1: #90EE90;
+    --green2: #32CD32;
+    --green3: #008000;
+    --green4: #006400;
+    --lime: #00FF00;
+    --olive: #808000;
+
+    --blue1: #ADD8E6;
+    --blue2: #87CEEB;
+    --blue3: #1E90FF;
+    --blue4: #007BFF;
+    --blue5: #00008B;
+    --cyan: #00FFFF;
+    --teal: #008080;
+
+    --purple1: #800080;
+    --purple2: #8A2BE2;
+    --purple3: #9370DB;
+    --violet: #EE82EE;
+
+    --pink1: #FF69B4;
+    --pink2: #FF1493;
+    --pink3: #FFC0CB;
+
+    --brown1: #D2B48C;
+    --brown2: #A0522D;
+    --brown3: #5C4033;
+    --beige: #F5F5DC;
+
+    --magenta: #FF00FF;
+    --indigo: #4B0082;
+    --navy: #000080;
+    --maroon: #800000;
+    --coral: #FF7F50;
+    --salmon: #FA8072;
+    --khaki: #F0E68C;
+    --mint: #98FF98;
+    --turquoise: #40E0D0;
+    --gold: #FFD700;
+    --silver: #C0C0C0;
+    --bronze: #CD7F32;
+    --rust: #B7410E;
+    --cream: #FFFDD0;
+    --apricot: #FBCEB1;
+    --lavender: #E6E6FA;
+    --plum: #DDA0DD;
+    --orchid: #DA70D6;
+    --primary-font: Arial, sans-serif;
+    --secondary-font: Helvetica, sans-serif;
+}
+
+
+body { 
+    width: 1280px;
+}
+
+#topBar{
+    display: flex;
+    flex-direction: row;
+    background-color: #1E90FF;
+    border-bottom: 3px solid var(--black);
+}
+
+h1{
+    font-size: 4rem;
+    color:var(--black);
+    padding: 20px;
+    padding-left: 40%;
+    font-weight: 900;
+    width: 300px;
+}
+
+#navigation{
+    margin-left: 15%;
+    align-self:flex-end;
+}
+
+#navigation ul{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+#navigation ul li{
+    text-align: center;
+    
+
+}
+#navigation ul a{
+    display: flex;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 200px;
+    height: 30px;
+    background-color: var(--white);
+    border: 3px solid var(--black);
+    text-decoration: none;
+    color: var(--black);
+    justify-content: center; 
+    align-items: flex-end;  
+    margin-bottom: -2px;
+}
+#navigation ul .active{
+    border-bottom: 0px solid;
+    
+    transform: translateY(2px);
+}
