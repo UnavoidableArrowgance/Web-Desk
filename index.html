@@ -23,10 +23,11 @@
 </head>
 
 <body>
+    <h1  class="visually-hidden">Web Desk Dashboard</h1>
     <header id="topBar">
-        <!-- writing a banner with an image for the header, looking like a star traveling on grass -->
-        <div id="headder"> 
-            <h1 class="title">Web Desk</h1>
+        <!-- writing a banner with a nav that resembles tabs themselves -->
+        <div id="siteTitle"> 
+            <span class="title">Web Desk</span>
         </div>
         <nav id="navigation">
             <ul>
@@ -38,10 +39,33 @@
     </header>
 
     <main>
+        <div id="dashboard" class="dashboard-normal">
 
+            <!-- Left sidebar buttons -->
+            <aside id="dashboardSidebar">
+                <button id="backgroundColor">Background</button>
+                <button id="addIcon">Add an Icon</button>
+                <button id="trashCanBol">Trash Can</button>
+                <button id="editMode">Edit Mode</button>
+                <button id="activeMode">Active Mode</button>
+                <button id="loadSave">Load</button>
+                <button id="save">Save</button>
+                <button id="clearBoard">Clear Board</button>
+            </aside>
+
+            <!-- Icon grid -->
+            <section id="icons">
+            
+            </section>
+
+            <div id="fullScreenControls" class="overDashboard">
+                <button id="fullscreenBtn">Fullscreen</button>
+            </div>
+
+            <!-- Trash Can overlay -->
+            <div id="trashCan" class="overDashboard">
+                <img src="images/trash.png" alt="Trash Can">
+            </div>
+        </div>
     </main>
-
-    <footer>
-
-    </footer>
 </body>
