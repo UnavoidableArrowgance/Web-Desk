@@ -128,12 +128,12 @@ table {
     --primary-font: Arial, sans-serif;
     --secondary-font: Helvetica, sans-serif;
 
-    --topBarHeight: 90px
+    --topBarHeight: 100px
 }
 
 
 body { 
-    width: 1280px;
+    width: auto;
     margin:0;
     font-family: Arial, Helvetica, sans-serif;
     text-align:center;
@@ -151,6 +151,10 @@ body {
     border:0;
 }
 
+.hidden{
+    display:none !important;
+}
+
 #topBar{
     display: flex;
     flex-direction: row;
@@ -162,21 +166,21 @@ body {
 #siteTitle{
     font-size: 4rem;
     color:var(--black);
-    padding: 20px;
-    padding-left: 5%;
+    padding-top:20px;
+    padding-left: 1%;
     font-weight: 900;
-    width: 400px;
+    min-width: 350px;
+    width: 500px;
 }
 
 #navigation{
-    margin-left: 5%;
     align-self:flex-end;
 }
 
 #navigation ul{
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    gap: 10vw;
 }
 #navigation ul li{
     text-align: center;
@@ -195,19 +199,61 @@ body {
     color: var(--black);
     justify-content: center; 
     align-items: flex-end;  
-    margin-bottom: -2px;
+    margin-bottom: -3px;
 }
 #navigation ul .active{
     border-bottom: 0px solid;
     
-    transform: translateY(2px);
+    transform: translateY(3px);
 }
 
+@media screen and (max-width: 1250px) and (min-width:1000px){
+    #navigation ul {
+        gap: calc((81vw - 800px) /  1.6);
+    }
+    #siteTitle{
+        width:370px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    
+    #topBar{
+        flex-direction: column;
+    }
+    #siteTitle{
+        font-size: 3rem;
+        padding-top: 5px;
+        height: 70px;
+        align-self: center;
+    }
+    #navigation ul {
+        gap: calc((109.2vw - 680px) /  2.18);
+    }
+    #navigation ul a{
+        width: 130px;
+    }
+    #navigation ul .active{
+        transform: translateY(3px);
+    }
 
+}
+@media screen and (max-width: 625px) {
+    #navigation ul a{
+        width: 90px;
+        font-size: 1rem;
+        height: 21px;
+        margin-top: 3px;
+        
+        transform: translateY(.5px);
+    }
+    #navigation ul .active{
+        transform: translateY(3.2px);
+    }
+    #navigation ul {
+        gap: calc((130vw - 670px) /  2.28);
+    }
 
-
-
-
+}
 
 
 
@@ -340,21 +386,44 @@ body {
 
 /* #region Dashboard */
 
-#dashboard{
-    display:flex;
-    flex-direction: column;
-    height: calc(99.8vh - var(--topBarHeight));
+#fullDashboard {
+    display: flex;
+    flex-direction: row; 
+    height: calc(99vh - var(--topBarHeight));
 }
-
-#dashboardSidebar{
-    position: sticky; top: 0;
-    flex-grow: 1;
-    width:200px;
+#dashboardSidebar {
+    width: 200px;
     border: 3px solid black;
     display: grid;
-    grid:
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+#dashboard {
+    flex-grow: 1;
+    border: 2px solid #ccc;
+    min-height: 100%;
 }
 
+
+
+
+#bgColor{
+    display:none;
+}
+
+#bgColorButton{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+#colorPreview{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    border:2px solid black;
+    background:#ffffff;
+}
 
 
 
@@ -374,6 +443,55 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* #region Icons*/
+
+/* Wrapper for each icon */
+.iconWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    cursor: pointer; /* indicates draggable/clickable */
+}
+
+/* Triangle shape */
+.iconShape.triangle {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 50px solid #3498db; /* triangle color */
+}
+
+/* Label under the triangle */
+.iconWrapper p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Optional: style link to remove default underline */
+.iconLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+
+/*#endregion*/
 /* #endregion*/
 
 

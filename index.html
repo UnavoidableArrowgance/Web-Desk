@@ -39,22 +39,30 @@
     </header>
 
     <main>
-        <div id="dashboard" class="dashboard-normal">
+        <div id="fullDashboard" class="dashboard-normal">
 
             <!-- Left sidebar buttons -->
             <aside id="dashboardSidebar">
-                <button id="backgroundColor">Background</button>
+                <div id="backgroundColorTool">
+
+                    <button id="bgColorButton">
+                        Background
+                        <span id="colorPreview"></span>
+                    </button>
+
+                    <input type="color" id="bgColor">
+
+                </div>
                 <button id="addIcon">Add an Icon</button>
                 <button id="trashCanBol">Trash Can</button>
                 <button id="editMode">Edit Mode</button>
                 <button id="activeMode">Active Mode</button>
-                <button id="loadSave">Load</button>
+                <button id="load">Load</button>
                 <button id="save">Save</button>
                 <button id="clearBoard">Clear Board</button>
             </aside>
 
-            <!-- Icon grid -->
-            <section id="icons">
+            <section id="dashboard">
             
             </section>
 
