@@ -107,20 +107,8 @@ $(document).ready(function() {
     });
 
     $("#fullscreenBtn").on("click", function() {
-    isFullScreen = !isFullScreen;
-
-        if (isFullScreen) {
-            xDashboardMin = -8;
-            yDashboardMin = -14;
-            xDashboardMax = window.innerWidth - 90;
-            yDashboardMax = window.innerHeight - 100;
-        } else {
-            xDashboardMin = 210;
-            yDashboardMin = 90;
-            xDashboardMax = window.innerWidth - 90;
-            yDashboardMax = window.innerHeight - 90;
-        }
-
+        isFullScreen = !isFullScreen;
+        setFullHeight()
         fullScreenFunction();
     });
 
@@ -449,12 +437,20 @@ function setFullHeight() {
     if (isFullScreen){
             $("#fullDashboard").height(window.innerHeight-10 + "px");
             $("#fullDashboard").width(window.innerWidth-10  + "px");
+
+            xDashboardMin = 0;
+            yDashboardMin = 0;
+            xDashboardMax = window.innerWidth - 90;
+            yDashboardMax = window.innerHeight - 100;
     }else{
             $("#fullDashboard").height((.99*window.innerHeight - 110)  + "px");
             $("#fullDashboard").width(window.innerWidth-10  + "px");
-
+            
+            xDashboardMin = 210;
+            yDashboardMin = 90;
+            xDashboardMax = window.innerWidth - 90;
+            yDashboardMax = window.innerHeight - 90;
     }
 }
-
 // Update height on window resize
 $(window).resize(setFullHeight);
