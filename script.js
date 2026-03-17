@@ -11,7 +11,7 @@ let isFullScreen = false;
 let xDashboardMin = 210;
 let xDashboardMax = window.innerWidth - 90;
 let yDashboardMin = 90;
-let yDashboardMax = window.innerHeight - 90;
+let yDashboardMax = window.innerHeight - 95;
 
 // --- Element references ---
 const topBar =$("#topBar");
@@ -21,7 +21,7 @@ const BgColorPicker = $("#bgColor");
 const preview = $("#colorPreview");
 const dashboard = $("#dashboard");
 const trashCan = $("#trashCan");
-const fullScreenButton = $("#fullScreenBtn");
+const fullScreenButton = $("#fullscreenBtn");
 const addIconBtn = document.getElementById("addIcon");
 
 $(document).ready(function() {
@@ -382,6 +382,9 @@ function fullScreenFunction(){
     let xMultiplier = 1+((sideBarWidth)/(dashboardWidth));
 
     if(isFullScreen){ //just turned full screen from button
+        fullScreenButton.addClass("fullScreened")
+        fullScreenButton.removeClass("windowed")
+        fullScreenButton.text("Window");
         topBar.addClass("hidden");
         SideBar.addClass("hidden");
 
@@ -397,15 +400,23 @@ function fullScreenFunction(){
 
             x = (dashboardWidth -x)*xMultiplier;
             x = window.innerWidth-x;
+            
+            if (x < xDashboardMin) x = xDashboardMin;
+            if (x > xDashboardMax) x = xDashboardMax;
+            if (y < yDashboardMin) y = yDashboardMin;
+            if (y > yDashboardMax) y = yDashboardMax;
 
             wrapper.style.top = y + "px";
             wrapper.style.left = x + "px";
 
         });
-            $("#fullDashboard").height(window.innerHeight-10 + "px");
-            $("#fullDashboard").width(window.innerWidth-10  + "px");
+            $("#fullDashboard").height((window.innerHeight-5) + "px");
+            $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
     }else{ //just turned full screen from button
+        fullScreenButton.addClass("windowed")
+        fullScreenButton.removeClass("fullScreened")
+        fullScreenButton.text("Fullscreen");
         topBar.removeClass("hidden");
         SideBar.removeClass("hidden");
         
@@ -419,13 +430,19 @@ function fullScreenFunction(){
             x = (window.innerWidth -x)*(1/xMultiplier);
             x = window.innerWidth-x;
 
+            
+            if (x < xDashboardMin) x = xDashboardMin;
+            if (x > xDashboardMax) x = xDashboardMax;
+            if (y < yDashboardMin) y = yDashboardMin;
+            if (y > yDashboardMax) y = yDashboardMax;
+
             wrapper.style.top = y + "px";
             wrapper.style.left = x + "px";
 
             
         });
-            $("#fullDashboard").height((.99*window.innerHeight - 110)  + "px");
-            $("#fullDashboard").width(window.innerWidth-10  + "px");
+            $("#fullDashboard").height((window.innerHeight - 105)  + "px");
+            $("#fullDashboard").width((window.innerWidth-1)  + "px");
     }
     
 }
@@ -435,21 +452,21 @@ function fullScreenFunction(){
 function setFullHeight() {
     $('#fullDashboard').height($(window).height());
     if (isFullScreen){
-            $("#fullDashboard").height(window.innerHeight-10 + "px");
-            $("#fullDashboard").width(window.innerWidth-10  + "px");
+            $("#fullDashboard").height((window.innerHeight-5) + "px");
+            $("#fullDashboard").width((window.innerWidth-1)  + "px");
 
             xDashboardMin = 0;
             yDashboardMin = 0;
             xDashboardMax = window.innerWidth - 90;
-            yDashboardMax = window.innerHeight - 100;
+            yDashboardMax = window.innerHeight - 95;
     }else{
-            $("#fullDashboard").height((.99*window.innerHeight - 110)  + "px");
-            $("#fullDashboard").width(window.innerWidth-10  + "px");
+            $("#fullDashboard").height((window.innerHeight - 105)  + "px");
+            $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
             xDashboardMin = 210;
             yDashboardMin = 90;
             xDashboardMax = window.innerWidth - 90;
-            yDashboardMax = window.innerHeight - 90;
+            yDashboardMax = window.innerHeight - 95;
     }
 }
 // Update height on window resize
