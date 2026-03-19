@@ -460,7 +460,7 @@ function setFullHeight() {
             xDashboardMax = window.innerWidth - 90;
             yDashboardMax = window.innerHeight - 95;
     }else{
-            $("#fullDashboard").height((window.innerHeight - 105)  + "px");
+            $("#fullDashboard").height((window.innerHeight - 108)  + "px");
             $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
             xDashboardMin = 210;
