@@ -389,7 +389,7 @@ body {
 #fullDashboard {
     display: flex;
     flex-direction: row; 
-    height: calc(100vh - var(--topBarHeight) - 5px);
+    height: calc(100vh - var(--topBarHeight) - 8px);
 }
 #dashboardSidebar {
     width: 200px;
