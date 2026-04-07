@@ -9,7 +9,7 @@ let editMode = true;
 let deleteMode = false;
 let isFullScreen = false;
 
-let xDashboardMin = 210;
+let xDashboardMin = 160;
 let xDashboardMax = window.innerWidth - 200;
 let yDashboardMin = 90;
 let yDashboardMax = window.innerHeight - 140;
@@ -686,8 +686,8 @@ function clearBoard(){
 
 
 function fullScreenFunction(){
-    const topBarHeight = 100;
-    const sideBarWidth = 200;
+    const topBarHeight = 90;
+    const sideBarWidth = 160;
 
     let dashboardHeight = window.innerHeight-topBarHeight;
     let dashboardWidth = window.innerWidth-sideBarWidth;
@@ -798,7 +798,7 @@ function setFullHeight() {
             $("#fullDashboard").height((window.innerHeight - 108)  + "px");
             $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
-            xDashboardMin = 210;
+            xDashboardMin = 160;
             yDashboardMin = 90;
             xDashboardMax = window.innerWidth - 200;
             yDashboardMax = window.innerHeight - 140;
