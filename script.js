@@ -10,9 +10,9 @@ let deleteMode = false;
 let isFullScreen = false;
 
 let xDashboardMin = 210;
-let xDashboardMax = window.innerWidth - 120;
+let xDashboardMax = window.innerWidth - 200;
 let yDashboardMin = 90;
-let yDashboardMax = window.innerHeight - 130;
+let yDashboardMax = window.innerHeight - 140;
 let imageSize = 128;
 
 // --- Element references ---
@@ -699,7 +699,11 @@ function fullScreenFunction(){
     if(isFullScreen){ //just turned full screen from button
         fullScreenButton.addClass("fullScreened")
         fullScreenButton.removeClass("windowed")
-        fullScreenButton.text("Window");
+        if (editMode){
+            fullScreenButton.text("(Edit Mode) Window");
+        } else{
+            fullScreenButton.text("(Active Mode) Window");
+        }
         topBar.addClass("hidden");
         SideBar.addClass("hidden");
 
@@ -739,7 +743,11 @@ function fullScreenFunction(){
     }else{ //just turned full screen from button
         fullScreenButton.addClass("windowed")
         fullScreenButton.removeClass("fullScreened")
-        fullScreenButton.text("Fullscreen");
+        if (editMode){
+            fullScreenButton.text("Fullscreen");
+        } else{
+            fullScreenButton.text("Fullscreen");
+        }
         topBar.removeClass("hidden");
         SideBar.removeClass("hidden");
         
@@ -784,16 +792,16 @@ function setFullHeight() {
 
             xDashboardMin = 0;
             yDashboardMin = 0;
-            xDashboardMax = window.innerWidth - 120;
-            yDashboardMax = window.innerHeight - 130;
+            xDashboardMax = window.innerWidth - 200;
+            yDashboardMax = window.innerHeight - 140;
     }else{
             $("#fullDashboard").height((window.innerHeight - 108)  + "px");
             $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
             xDashboardMin = 210;
             yDashboardMin = 90;
-            xDashboardMax = window.innerWidth - 120;
-            yDashboardMax = window.innerHeight - 130;
+            xDashboardMax = window.innerWidth - 200;
+            yDashboardMax = window.innerHeight - 140;
     }
 }
 // Update height on window resize
