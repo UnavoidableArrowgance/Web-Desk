@@ -51,26 +51,112 @@
                     <input type="color" id="bgColor">
 
                 </div>
+                <button id="toggleMode">Switch to Active</button>
+                <div id="modeDisplay">Mode: Edit</div>
                 <button id="addIcon">Add an Icon</button>
-                <button id="trashCanBol">Trash Can</button>
-                <button id="editMode">Edit Mode</button>
-                <button id="activeMode">Active Mode</button>
+                <button id="deleteTool">Delete Tool</button>
                 <button id="load">Load</button>
                 <button id="save">Save</button>
                 <button id="clearBoard">Clear Board</button>
             </aside>
 
+
+            <div id="iconModalOverlay" class="hidden">
+                <section id="iconModal" aria-labelledby="iconModalTitle" aria-modal="true" role="dialog">
+
+                    <h2 id="iconModalTitle">Create Icon</h2>
+
+                    <!-- top: mode switch -->
+                    <div id="iconTypeSwitch">
+                        <label>
+                            <input type="radio" name="iconType" value="shape" checked>
+                            Shape Icon
+                        </label>
+
+                        <label>
+                            <input type="radio" name="iconType" value="image">
+                            Image Upload
+                        </label>
+                    </div>
+
+                    <!-- middle: preview + changing controls -->
+                    <div id="iconBuilder">
+
+                        <!-- live preview -->
+                        <div id="iconPreviewPanel">
+                            <div id="iconPreviewBox">
+                                <div id="iconPreviewShape" class="iconShape square"></div>
+                                <img id="iconPreviewImage" class="hidden" alt="Icon preview">
+                            </div>
+                        </div>
+
+                        <!-- shape controls -->
+                        <div id="shapeControls">
+                            <label for="shapeSelect">Shape</label>
+                            <select id="shapeSelect">
+                                <option value="circle">Circle</option>
+                                <option value="triangle-up">Triangle Up</option>
+                                <option value="triangle-down">Triangle Down</option>
+                                <option value="triangle-left">Triangle Left</option>
+                                <option value="triangle-right">Triangle Right</option>
+                                <option value="square">Square</option>
+                                <option value="diamond">Diamond</option>
+                                <option value="rectangle">Rectangle</option>
+                                <option value="oval">Oval</option>
+                                <option value="star">5pt Star</option>
+                                <option value="hexagon">Hexagon</option>
+                                <option value="plus">Plus</option>
+                                <option value="x">X</option>
+                            </select>
+
+                            <label for="shapeColor">Shape Color</label>
+                            <div class="colorPickerRow">
+                                <button type="button" id="shapeColorButton">Choose Color</button>
+                                <span id="shapeColorPreview" class="colorPreview"></span>
+                                <input type="color" id="shapeColor" value="#34c759">
+                            </div>
+                        </div>
+
+                        <!-- image controls -->
+                        <div id="imageControls" class="hidden">
+                            <label for="iconImageUpload">Upload Image</label>
+                            <input type="file" id="iconImageUpload" accept="image/*">
+
+                            <p id="uploadHelp">Converts to 32 x 32 image</p>
+                        </div>
+
+                        <!-- bottom: shared fields -->
+                        <div id="iconSharedFields">
+                            <label for="iconLabel">Display Label under Icon</label>
+                            <input type="text" id="iconLabel" placeholder="Label">
+
+                            <label for="textColor">Text Color</label>
+                            <div class="colorPickerRow">
+                                <button type="button" id="textColorButton">Choose Color</button>
+                                <span id="textColorPreview" class="colorPreview"></span>
+                                <input type="color" id="textColor" value="#000000">
+                            </div>
+
+                            <label for="iconLinkInput">Link to external website</label>
+                            <input type="url" id="iconLinkInput" placeholder="Link">
+                        </div>
+
+                        <!-- actions -->
+                        <div id="iconModalActions">
+                            <button type="button" id="cancelIconCreate">Cancel</button>
+                            <button type="button" id="createIconConfirm">Create Icon</button>
+                        </div>
+
+                </section>
+            </div>
+
+            
             <section id="dashboard">
             
             </section>
 
             <div id="fullScreenControls" class="overDashboard">
                 <button id="fullscreenBtn" class="windowed">Fullscreen</button>
-            </div>
-
-            <!-- Trash Can overlay -->
-            <div id="trashCan" class="overDashboard">
-                <img src="images/trash.png" alt="Trash Can">
             </div>
         </div>
     </main>

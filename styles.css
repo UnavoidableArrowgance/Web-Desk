@@ -184,9 +184,9 @@ body {
 }
 #navigation ul li{
     text-align: center;
-    
-
 }
+
+
 #navigation ul a{
     display: flex;
     font-size: 1.5rem;
@@ -426,6 +426,11 @@ body {
 }
 
 
+#modeDisplay {
+    font-weight: bold;
+    text-align: center;
+    margin: 0.5rem 0;
+}
 
 .overDashboard{
     position: absolute;
@@ -437,9 +442,10 @@ body {
     right: 1rem;
 }
 
-#trashCan{
-    bottom: 1rem;
-    left: 250px;
+
+button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 
@@ -448,6 +454,104 @@ body {
 
 
 
+/* #region Icon Popup */
+
+/* Modal layout (true centered single column) */
+#iconModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center EVERYTHING */
+    gap: 1rem;
+    width: 500px;
+    max-width: 90vw;
+}
+
+/* Keep content readable (not stretched full width) */
+#iconBuilder,
+#iconSharedFields {
+    width: 100%;
+    max-width: 320px;
+}
+
+/* Title centered */
+#iconModalTitle {
+    text-align: center;
+    margin: 0;
+}
+
+/* Type switch centered */
+#iconTypeSwitch {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+/* Preview centered */
+#iconPreviewPanel {
+    display: flex;
+    justify-content: center;
+}
+#iconPreviewImage {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+/* Preview box */
+#iconPreviewBox {
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Controls stacked */
+#shapeControls,
+#imageControls,
+#iconSharedFields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Labels */
+#iconModal label {
+    font-weight: bold;
+}
+
+/* Inputs */
+#iconModal input,
+#iconModal select {
+    width: 100%;
+    padding: 4px 6px;
+}
+
+/* Color row */
+.colorPickerRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Color preview */
+.colorPreview {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+/* Buttons centered */
+#iconModalActions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* #endregion */
 
 
 
@@ -455,41 +559,276 @@ body {
 
 
 
+/* #region Icons */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+#iconModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
 
-/* #region Icons*/
+#iconModal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+}
 
 /* Wrapper for each icon */
 .iconWrapper {
+    width: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 1rem;
-    cursor: pointer; /* indicates draggable/clickable */
+    cursor: pointer;
+    transform: scale(1.5);
+    transform-origin: top left;
 }
-
-/* Triangle shape */
-.iconShape.triangle {
-    width: 0;
-    height: 0;
-    border-left: 30px solid transparent;
-    border-right: 30px solid transparent;
-    border-bottom: 50px solid #3498db; /* triangle color */
-}
-
-/* Label under the triangle */
-.iconWrapper p {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    text-align: center;
-}
-
 
 .iconLink {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
     color: inherit;
 }
 
+#dashboard.deleteMode .iconWrapper:hover {
+    filter: drop-shadow(0 0 8px red);
+}
 
+#dashboard.deleteMode .iconWrapper {
+    cursor: url('images/smallRedX.png') 15 12, auto;
+}
+
+
+
+
+.colorPickerRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.colorPreview {
+    width: 22px;
+    height: 22px;
+    border: 2px solid black;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#shapeColor,
+#textColor {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* Shape/image visual alignment */
+.iconShape,
+.iconImage {
+    display: block;
+    margin: 0 auto;
+    flex-shrink: 0;
+}
+
+.iconImage {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    display: block;
+}
+
+/* #region class shapes */
+
+.iconShape {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+/* Triangle Up */
+.iconShape.triangle-up {
+    width: 54px;
+    height: 54px;
+    background-color: #3498db;
+    clip-path: polygon(50% 8%, 8% 92%, 92% 92%);
+}
+
+/* Triangle Down */
+.iconShape.triangle-down {
+    width: 54px;
+    height: 54px;
+    background-color: #e74c3c;
+    clip-path: polygon(8% 8%, 92% 8%, 50% 92%);
+}
+
+/* Triangle Left */
+.iconShape.triangle-left {
+    width: 54px;
+    height: 54px;
+    background-color: #2ecc71;
+    clip-path: polygon(8% 50%, 92% 8%, 92% 92%);
+}
+
+/* Triangle Right */
+.iconShape.triangle-right {
+    width: 54px;
+    height: 54px;
+    background-color: #f1c40f;
+    clip-path: polygon(8% 8%, 92% 50%, 8% 92%);
+}
+
+/* Square */
+.iconShape.square {
+    width: 50px;
+    height: 50px;
+    background-color: #00FF00;
+}
+
+/* Diamond */
+.iconShape.diamond {
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    clip-path: polygon(50% 8%, 92% 50%, 50% 92%, 8% 50%);
+}
+
+/* Rectangle */
+.iconShape.rectangle {
+    width: 54px;
+    height: 40px;
+    background-color: #9b59b6;
+}
+
+/* Circle */
+.iconShape.circle {
+    width: 50px;
+    height: 50px;
+    background-color: #e67e22;
+    border-radius: 50%;
+}
+
+/* Oval */
+.iconShape.oval {
+    width: 54px;
+    height: 40px;
+    background-color: #1abc9c;
+    border-radius: 50%;
+}
+
+/* Star */
+.iconShape.star {
+    width: 54px;
+    height: 54px;
+    background-color: gold;
+    clip-path: polygon(
+        50% 4%,
+        61% 35%,
+        94% 35%,
+        68% 55%,
+        78% 88%,
+        50% 68%,
+        22% 88%,
+        32% 55%,
+        6% 35%,
+        39% 35%
+    );
+}
+
+/* Hexagon */
+.iconShape.hexagon {
+    width: 54px;
+    height: 50px;
+    background-color: #e74c3c;
+    clip-path: polygon(
+        25% 6%,
+        75% 6%,
+        94% 50%,
+        75% 94%,
+        25% 94%,
+        6% 50%
+    );
+}
+
+/* Plus */
+.iconShape.plus {
+    width: 50px;
+    height: 50px;
+    background-color: #2c3e50;
+    clip-path: polygon(
+        35% 0%,
+        65% 0%,
+        65% 35%,
+        100% 35%,
+        100% 65%,
+        65% 65%,
+        65% 100%,
+        35% 100%,
+        35% 65%,
+        0% 65%,
+        0% 35%,
+        35% 35%
+    );
+}
+
+/* X */
+.iconShape.x {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    clip-path: polygon(
+        20% 0%,
+        50% 30%,
+        80% 0%,
+        100% 20%,
+        70% 50%,
+        100% 80%,
+        80% 100%,
+        50% 70%,
+        20% 100%,
+        0% 80%,
+        30% 50%,
+        0% 20%
+    );
+}
+
+/* #endregion */
+
+/* Label under icon */
+
+.iconWrapper,
+.iconLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.iconWrapper p,
+.iconLink p {
+
+    margin-top: 0.1rem;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: normal;
+    
+    line-height: 1.2;
+    padding-bottom: 2px;
+}
+
+/* #endregion */
 
 
 #fullscreenBtn{

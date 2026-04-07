@@ -1,34 +1,41 @@
 "use strict";
-console.log(window.innerWidth);  // width in pixels
-console.log(window.innerHeight); // height in pixels
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+
 // --- Global state ---
 const icons = [];
-let iconCount = 0; // keeps track for names and IDs
+let iconCount = 0;
 let editMode = true;
-let trashExists = true;
+let deleteMode = false;
 let isFullScreen = false;
 
 let xDashboardMin = 210;
-let xDashboardMax = window.innerWidth - 90;
+let xDashboardMax = window.innerWidth - 120;
 let yDashboardMin = 90;
-let yDashboardMax = window.innerHeight - 95;
+let yDashboardMax = window.innerHeight - 130;
+let imageSize = 128;
 
 // --- Element references ---
-const topBar =$("#topBar");
+const topBar = $("#topBar");
 const SideBar = $("#dashboardSidebar");
 const BgColorButton = $("#bgColorButton");
 const BgColorPicker = $("#bgColor");
 const preview = $("#colorPreview");
 const dashboard = $("#dashboard");
-const trashCan = $("#trashCan");
+const deleteTool = $("#deleteTool");
 const fullScreenButton = $("#fullscreenBtn");
 const addIconBtn = document.getElementById("addIcon");
 
+const editButtons = [
+    "#addIcon",
+    "#deleteTool",
+    "#clearBoard"
+];
+
+
 $(document).ready(function() {
 
-    // --- Initialize dashboard from localStorage ---
     function initializeDashboard() {
-        // Background color
         const savedBackgroundColor = localStorage.getItem("dashboardBgColor");
         if (savedBackgroundColor) {
             dashboard.css("background-color", savedBackgroundColor);
@@ -38,24 +45,18 @@ $(document).ready(function() {
             preview.css("background-color", BgColorPicker.val());
         }
 
-        // Trash visibility
-        const trashSaved = localStorage.getItem("trashExists");
-        trashExists = trashSaved === null ? true : trashSaved === "true";
-        if(trashExists){
-            trashCan.show();
-        } else {
-            trashCan.hide();
-        }
-
-        // Edit mode
         const editSaved = localStorage.getItem("editMode");
         editMode = editSaved === null ? true : editSaved === "true";
-        // Optional: update button styles to reflect mode
+
+        // ✅ NEW (mode display sync)
+        $("#modeDisplay").text(editMode ? "Mode: Edit" : "Mode: Active");
+        $("#toggleMode").text(editMode ? "Switch to Active" : "Switch to Edit");
     }
+
 
     initializeDashboard();
 
-    // --- Background picker ---
+    // Background picker
     BgColorButton.on("click", function() {
         BgColorPicker.click();
     });
@@ -67,22 +68,24 @@ $(document).ready(function() {
         localStorage.setItem("dashboardBgColor", color);
     });
 
-    // --- Mode toggles ---
-    $("#editMode").on("click", function() {
-        editMode = true;
-        console.log("editMode");
+    // ✅ NEW SINGLE MODE TOGGLE
+    $("#toggleMode").on("click", function() {
+        editMode = !editMode;
+
+        $("#modeDisplay").text(editMode ? "Mode: Edit" : "Mode: Active");
+        $("#toggleMode").text(editMode ? "Switch to Active" : "Switch to Edit");
+
+        // reset delete tool
+        deleteMode = false;
+        dashboard.css("cursor", "default");
+        dashboard.removeClass("deleteMode");
+        deleteTool.text("Delete Tool");
+
         localStorage.setItem("editMode", editMode);
         switchMode();
     });
 
-    $("#activeMode").on("click", function() {
-        editMode = false;
-        console.log("activeMode");
-        localStorage.setItem("editMode", editMode);
-        switchMode();
-    });
-
-    // --- save/load ---
+    // save/load
     $("#load").on("click", function() {
         LoadPreviousDashboardLayout();
     });
@@ -95,94 +98,350 @@ $(document).ready(function() {
         clearBoard();
     });
 
-    // --- Trash toggle ---
-    $("#trashCanBol").on("click", function() {
-        trashExists = !trashExists;
-        if(trashExists){
-            trashCan.show();
+    // delete tool
+    $("#deleteTool").on("click", function() {
+        if (!editMode) return;
+
+        deleteMode = !deleteMode;
+        $("#deleteTool").text(deleteMode ? "Cancel Delete" : "Delete Tool");
+
+        if (deleteMode) {
+            dashboard.css("cursor", "url('images/smallRedX.png') 15 12, auto");
+            dashboard.addClass("deleteMode");
         } else {
-            trashCan.hide();
+            dashboard.css("cursor", "default");
+            dashboard.removeClass("deleteMode");
         }
-        localStorage.setItem("trashExists", trashExists);
     });
 
     $("#fullscreenBtn").on("click", function() {
         isFullScreen = !isFullScreen;
-        setFullHeight()
+        setFullHeight();
         fullScreenFunction();
     });
+    updateButtons();
 
+
+// =======================
+// INITIALIZE DEFAULT PREVIEWS
+// =======================
+    $("#shapeColorPreview").css("background-color", $("#shapeColor").val());
+    $("#textColorPreview").css("background-color", $("#textColor").val());
     
 
+
+});
+
+// Add Icon
+addIconBtn.addEventListener("click", function() {
+
+    // reset delete tool
+    deleteMode = false;
+    dashboard.css("cursor", "default");
+    dashboard.removeClass("deleteMode");
+    deleteTool.text("Delete Tool");
+    
+    $("#iconModalOverlay").removeClass("hidden");
+    clear_iconCreation();
+
+
+})
+
+
+$("#cancelIconCreate").on("click", function() {
+    $("#iconModalOverlay").addClass("hidden");
+    clear_iconCreation();
+})
+
+
+// =======================
+// ICON TYPE TOGGLE
+// =======================
+
+$("input[name='iconType']").on("change", function() {
+    const type = $("input[name='iconType']:checked").val();
+
+    if (type === "image") {
+        $("#shapeControls").addClass("hidden");
+        $("#imageControls").removeClass("hidden");
+
+        $("#iconPreviewShape").addClass("hidden");
+        $("#iconPreviewImage").removeClass("hidden");
+    } else {
+        $("#shapeControls").removeClass("hidden");
+        $("#imageControls").addClass("hidden");
+
+        $("#iconPreviewShape").removeClass("hidden");
+        $("#iconPreviewImage").addClass("hidden");
+    }
+});
+
+
+// =======================
+// ICON image upload tool
+// =======================
+
+$("#iconImageUpload").on("change", function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    resizeImageToDataURL(file, imageSize)
+        .then(function(resizedDataURL) {
+            $("#iconPreviewImage")
+                .attr("src", resizedDataURL)
+                .removeClass("hidden");
+
+            $("#iconPreviewShape").addClass("hidden");
+        })
+        .catch(function(error) {
+            console.error(error);
+            alert("There was a problem loading the preview image.");
+        });
+});
+
+
+
+function resizeImageToDataURL(file, size = 128) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = new Image();
+
+            img.onload = function() {
+                const canvas = document.createElement("canvas");
+                canvas.width = size;
+                canvas.height = size;
+
+                const ctx = canvas.getContext("2d");
+
+                if (!ctx) {
+                    reject(new Error("Canvas context failed"));
+                    return;
+                }
+
+                ctx.clearRect(0, 0, size, size);
+
+                // OPTIONAL: background fill (remove if you want transparent)
+                // ctx.fillStyle = "#ffffff";
+                // ctx.fillRect(0, 0, size, size);
+
+                const aspect = img.width / img.height;
+
+                let drawWidth, drawHeight;
+
+                if (aspect > 1) {
+                    // wider image
+                    drawWidth = size;
+                    drawHeight = size / aspect;
+                } else {
+                    // taller image
+                    drawHeight = size;
+                    drawWidth = size * aspect;
+                }
+
+                const x = (size - drawWidth) / 2;
+                const y = (size - drawHeight) / 2;
+
+                ctx.drawImage(img, x, y, drawWidth, drawHeight);
+
+                const dataURL = canvas.toDataURL("image/png");
+                resolve(dataURL);
+            };
+
+            img.onerror = () => reject(new Error("Image load failed"));
+            img.src = e.target.result;
+        };
+
+        reader.onerror = () => reject(new Error("File read failed"));
+        reader.readAsDataURL(file);
+    });
+}
+
+// =======================
+// PICKER CONTROLS
+// =======================
+
+// open native picker from button
+$("#shapeColorButton").on("click", function() {
+    $("#shapeColor").click();
+});
+
+$("#textColorButton").on("click", function() {
+    $("#textColor").click();
+});
+
+// update shape color preview + live icon preview
+$("#shapeColor").on("input", function() {
+    const color = $(this).val();
+
+    $("#shapeColorPreview").css("background-color", color);
+
+    // update preview shape in modal
+    $("#iconPreviewShape").css("background-color", color);
+});
+
+// update text color preview
+$("#textColor").on("input", function() {
+    const color = $(this).val();
+
+    $("#textColorPreview").css("background-color", color);
 });
 
 
 
 
 
+$("#shapeSelect").on("change", function() {
+    const shape = $(this).val();
+    const color = $("#shapeColor").val();
+
+    $("#iconPreviewShape")
+        .attr("class", "iconShape " + shape)
+        .css("background-color", color);
+});
+
+
+// =======================
+// RESET FUNCTION
+// =======================
+
+function clear_iconCreation() {
+
+    $("input[name='iconType'][value='shape']").prop("checked", true);
+
+    $("#shapeControls").removeClass("hidden");
+    $("#imageControls").addClass("hidden");
+
+    $("#shapeSelect").val("square");
+
+    $("#iconPreviewShape")
+        .attr("class", "iconShape square")
+        .css("background-color", "#34c759")
+        .removeClass("hidden");
+
+    $("#iconPreviewImage")
+        .attr("src", "")
+        .addClass("hidden");
+
+    $("#shapeColor").val("#34c759");
+    $("#textColor").val("#000000");
+
+    $("#shapeColorPreview").css("background-color", "#34c759");
+    $("#textColorPreview").css("background-color", "#000000");
+
+    $("#iconImageUpload").val("");
+
+    $("#iconLabel").val("");
+    $("#iconLinkInput").val("");
+}
 
 
 
 
 
-// Add Icon button click
-addIconBtn.addEventListener("click", function() {
-    if (!editMode){
+
+$("#createIconConfirm").on("click", function() {
+
+    const label = $("#iconLabel").val().trim();
+    const link = $("#iconLinkInput").val().trim();
+    const type = $("input[name='iconType']:checked").val();
+    const imageFile = $("#iconImageUpload")[0].files[0];
+    const shape = $("#shapeSelect").val();
+    const shapeColor = $("#shapeColor").val();
+    const textColor = $("#textColor").val();
+
+    if (!label) {
+        alert("Please enter a label.");
         return;
     }
+
+    if (!link) {
+        alert("Please enter a link.");
+        return;
+    }
+
+    if (type === "image" && !imageFile) {
+        alert("Please upload an image.");
+        return;
+    }
+
+    if (type === "image") {
+        resizeImageToDataURL(imageFile, imageSize)
+            .then(function(resizedDataURL) {
+                add_iconToDashboard({
+                    name: label,
+                    url: normalizeURL(link),
+                    type: type,
+                    shape: shape,
+                    shapeColor: shapeColor,
+                    textColor: textColor,
+                    imgSrc: resizedDataURL
+                });
+
+                $("#iconModalOverlay").addClass("hidden");
+                clear_iconCreation();
+            })
+            .catch(function(error) {
+                console.error(error);
+                alert("There was a problem processing the image.");
+            });
+    } else {
+        add_iconToDashboard({
+            name: label,
+            url: normalizeURL(link),
+            type: type,
+            shape: shape,
+            shapeColor: shapeColor,
+            textColor: textColor,
+            imgSrc: ""
+        });
+
+        $("#iconModalOverlay").addClass("hidden");
+        clear_iconCreation();
+    }
+});
+
+function normalizeURL(url) {
+    url = url.trim();
+
+    // if no protocol, add https
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url;
+    }
+
+    // extract domain (remove protocol first)
+    const domain = url.replace(/^https?:\/\//, "").split("/")[0];
+
+    // if no dot at all → no extension → add .com
+    if (!domain.includes(".")) {
+        url = url.replace(domain, domain + ".com");
+    }
+
+    return url;
+}
+
+function add_iconToDashboard(iconData) {
+    if (!editMode) return;
+
     iconCount++;
 
-    // Create icon object
     const newIcon = {
         id: iconCount,
-        name: "Icon" + iconCount,
-        url: "https://www.google.com",
-        imgSrc: "",   // triangle is CSS for now
-        x: 250,        // default position
+        name: iconData.name,
+        url: iconData.url,
+        type: iconData.type,
+        shape: iconData.shape,
+        shapeColor: iconData.shapeColor,
+        textColor: iconData.textColor,
+        imgSrc: iconData.imgSrc,
+        x: 250,
         y: 250
     };
 
-    // Add to icons array
     icons.push(newIcon);
-
-    //Create wrapper
-    const wrapper = document.createElement("div");
-    wrapper.className = "iconWrapper";
-    wrapper.style.position = "absolute"; // absolute so x/y works
-    wrapper.style.left = newIcon.x + "px";
-    wrapper.style.top = newIcon.y + "px";
-    wrapper.dataset.id = newIcon.id;
-
-    // Create triangle + label
-    const triangle = document.createElement("div");
-    triangle.className = "iconShape triangle";
-
-    const label = document.createElement("p");
-    label.textContent = newIcon.name;
-
-    // Add based on current mode
-    if(editMode) {
-        // Edit mode: just append children
-        wrapper.appendChild(triangle);
-        wrapper.appendChild(label);
-    } else {
-        // Active mode: wrap in <a> so it can be clicked
-        const link = document.createElement("a");
-        link.href = newIcon.url;
-        link.target = "_blank";
-        link.className = "iconLink";
-
-        link.appendChild(triangle);
-        link.appendChild(label);
-        wrapper.appendChild(link);
-    }
-
-    // Append wrapper to dashboard
-    dashboard.append(wrapper);
-
-    // Make it draggable (only works if editMode is true)
-    makeDraggable(wrapper);
-});
+    renderIcon(newIcon);
+}
 
 
 
@@ -190,6 +449,21 @@ addIconBtn.addEventListener("click", function() {
 
 
 
+function buttonEnabler(...buttons) {
+    buttons.forEach(btn => {
+        const $btn = $(btn);
+
+        const shouldDisable = !editMode;
+
+        $btn.prop("disabled", shouldDisable);
+
+        if (shouldDisable) {
+            $btn.addClass("disabled");
+        } else {
+            $btn.removeClass("disabled");
+        }
+    });
+}
 
 
 
@@ -234,8 +508,13 @@ function switchMode() {
             // optionally disable dragging
         }
     });
+
+    updateButtons();
 }
 
+function updateButtons() {
+    buttonEnabler(...editButtons);
+}
 
 
 
@@ -252,7 +531,7 @@ function switchMode() {
 
 function makeDraggable(wrapper) {
     wrapper.addEventListener("mousedown", function(e) {
-        if(!editMode) return;
+        if(!editMode || deleteMode) return;
 
         const startX = parseFloat(wrapper.style.left);
         const startY = parseFloat(wrapper.style.top);
@@ -297,61 +576,97 @@ function makeDraggable(wrapper) {
 
 
 function saveCurrentDashboardLayout() {
-
     const iconString = JSON.stringify(icons);
-
     localStorage.setItem("dashboardIcons", iconString);
     console.log(icons);
-
 }
 
-function LoadPreviousDashboardLayout(){
+function LoadPreviousDashboardLayout() {
     const savedIcons = localStorage.getItem("dashboardIcons");
+
     if (!savedIcons) {
         alert("No saved layout found.");
         return;
     }
+
     const loadedIcons = JSON.parse(savedIcons);
+
     clearBoard();
+
     let maxId = 0;
+
     loadedIcons.forEach(function(icon) {
-        if(icon.id > maxId){
-            maxId = icon.id
+        if (icon.id > maxId) {
+            maxId = icon.id;
         }
+
         icons.push(icon);
-        const wrapper = document.createElement("div");
-
-        wrapper.className = "iconWrapper";
-        wrapper.style.position = "absolute";
-        wrapper.style.left = icon.x + "px";
-        wrapper.style.top = icon.y + "px";
-        wrapper.dataset.id = icon.id;
-
-        const triangle = document.createElement("div");
-        triangle.className = "iconShape triangle";
-
-        const label = document.createElement("p");
-        label.textContent = icon.name;
-
-        if(editMode) {
-            wrapper.appendChild(triangle);
-            wrapper.appendChild(label);
-        } else {
-            const link = document.createElement("a");
-            link.href = icon.url;
-            link.target = "_blank";
-            link.className = "iconLink";
-
-            link.appendChild(triangle);
-            link.appendChild(label);
-            wrapper.appendChild(link);
-        }
-        dashboard.append(wrapper);
-        makeDraggable(wrapper);
+        renderIcon(icon);
     });
-    iconCount=maxId;
-    
+
+    iconCount = maxId;
 }
+
+function renderIcon(icon) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "iconWrapper";
+    wrapper.style.position = "absolute";
+    wrapper.style.left = icon.x + "px";
+    wrapper.style.top = icon.y + "px";
+    wrapper.dataset.id = icon.id;
+
+    let visual;
+
+    if (icon.type === "image") {
+        visual = document.createElement("img");
+        visual.src = icon.imgSrc;
+        visual.alt = icon.name;
+        visual.className = "iconImage";
+    } else {
+        visual = document.createElement("div");
+        visual.className = "iconShape " + icon.shape;
+        visual.style.backgroundColor = icon.shapeColor;
+    }
+
+    const label = document.createElement("p");
+    label.textContent = icon.name;
+    label.style.color = icon.textColor;
+
+    if (editMode) {
+        wrapper.appendChild(visual);
+        wrapper.appendChild(label);
+    } else {
+        const link = document.createElement("a");
+        link.href = icon.url;
+        link.target = "_blank";
+        link.className = "iconLink";
+
+        link.appendChild(visual);
+        link.appendChild(label);
+        wrapper.appendChild(link);
+    }
+
+    wrapper.addEventListener("click", function(e) {
+        if (deleteMode) {
+            wrapper.remove();
+
+            const id = parseInt(wrapper.dataset.id);
+            const index = icons.findIndex(iconObj => iconObj.id === id);
+
+            if (index !== -1) {
+                icons.splice(index, 1);
+            }
+
+            e.stopPropagation();
+            return;
+        }
+    });
+
+    dashboard.append(wrapper);
+    makeDraggable(wrapper);
+}
+
+
 
 
 
@@ -395,11 +710,11 @@ function fullScreenFunction(){
             y = y - topBarHeight;
             x = x - sideBarWidth;
 
-            y = (dashboardHeight-y)*yMultiplier;
-            y = window.innerHeight-y;
+            y = (dashboardHeight - y) * yMultiplier;
+            y = window.innerHeight - y;
 
-            x = (dashboardWidth -x)*xMultiplier;
-            x = window.innerWidth-x;
+            x = (dashboardWidth - x) * xMultiplier;
+            x = window.innerWidth - x;
             
             if (x < xDashboardMin) x = xDashboardMin;
             if (x > xDashboardMax) x = xDashboardMax;
@@ -409,7 +724,15 @@ function fullScreenFunction(){
             wrapper.style.top = y + "px";
             wrapper.style.left = x + "px";
 
+            const id = parseInt(wrapper.dataset.id);
+            const iconObj = icons.find(icon => icon.id === id);
+            if (iconObj) {
+                iconObj.x = x;
+                iconObj.y = y;
+            }
         });
+
+        
             $("#fullDashboard").height((window.innerHeight-5) + "px");
             $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
@@ -424,13 +747,12 @@ function fullScreenFunction(){
             let y = parseFloat(wrapper.style.top);
             let x = parseFloat(wrapper.style.left);
 
-            y = (window.innerHeight-y)*(1/yMultiplier);
-            y = window.innerHeight-y;
+            y = (window.innerHeight - y) * (1 / yMultiplier);
+            y = window.innerHeight - y;
 
-            x = (window.innerWidth -x)*(1/xMultiplier);
-            x = window.innerWidth-x;
+            x = (window.innerWidth - x) * (1 / xMultiplier);
+            x = window.innerWidth - x;
 
-            
             if (x < xDashboardMin) x = xDashboardMin;
             if (x > xDashboardMax) x = xDashboardMax;
             if (y < yDashboardMin) y = yDashboardMin;
@@ -439,7 +761,12 @@ function fullScreenFunction(){
             wrapper.style.top = y + "px";
             wrapper.style.left = x + "px";
 
-            
+            const id = parseInt(wrapper.dataset.id);
+            const iconObj = icons.find(icon => icon.id === id);
+            if (iconObj) {
+                iconObj.x = x;
+                iconObj.y = y;
+            }
         });
             $("#fullDashboard").height((window.innerHeight - 105)  + "px");
             $("#fullDashboard").width((window.innerWidth-1)  + "px");
@@ -457,16 +784,16 @@ function setFullHeight() {
 
             xDashboardMin = 0;
             yDashboardMin = 0;
-            xDashboardMax = window.innerWidth - 90;
-            yDashboardMax = window.innerHeight - 95;
+            xDashboardMax = window.innerWidth - 120;
+            yDashboardMax = window.innerHeight - 130;
     }else{
             $("#fullDashboard").height((window.innerHeight - 108)  + "px");
             $("#fullDashboard").width((window.innerWidth-1)  + "px");
             
             xDashboardMin = 210;
             yDashboardMin = 90;
-            xDashboardMax = window.innerWidth - 90;
-            yDashboardMax = window.innerHeight - 95;
+            xDashboardMax = window.innerWidth - 120;
+            yDashboardMax = window.innerHeight - 130;
     }
 }
 // Update height on window resize
