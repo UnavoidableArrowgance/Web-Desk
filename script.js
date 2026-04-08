@@ -706,6 +706,7 @@ function fullScreenFunction(){
         }
         topBar.addClass("hidden");
         SideBar.addClass("hidden");
+        $("#externalButtons").addClass("hidden");
 
         document.querySelectorAll(".iconWrapper").forEach(function(wrapper){
             let y = parseFloat(wrapper.style.top);
@@ -750,6 +751,7 @@ function fullScreenFunction(){
         }
         topBar.removeClass("hidden");
         SideBar.removeClass("hidden");
+        $("#externalButtons").removeClass("hidden");
         
         document.querySelectorAll(".iconWrapper").forEach(function(wrapper){
             let y = parseFloat(wrapper.style.top);
@@ -806,3 +808,150 @@ function setFullHeight() {
 }
 // Update height on window resize
 $(window).resize(setFullHeight);
+
+
+
+
+
+
+
+
+
+
+
+//Export and import
+
+
+// =======================
+// OPEN MODAL
+// =======================
+
+let storageManip = true;
+let exportData = ""
+
+$("#exportButton").on("click", function() {
+    $("#storageModalOverlay").removeClass("hidden");
+    $("#storageModalTitle").text("Export Layout");
+
+    exportData = JSON.stringify(localStorage);
+    $("#storageTextArea").val(exportData);
+
+    $("#storageAction").text("copy");
+
+    storageManip = false;
+});
+
+$("#importButton").on("click", function() {
+    $("#storageModalOverlay").removeClass("hidden");
+    $("#storageModalTitle").text("Import Layout");
+    
+    exportData = "";
+    $("#storageTextArea").val(exportData);
+
+    $("#storageAction").text("Commit import");
+    storageManip = true;
+});
+
+
+// =======================
+// MODAL ACTION BUTTONS
+// =======================
+
+$("#storageCancel").on("click", function() {
+    $("#storageModalOverlay").addClass("hidden");
+});
+
+$("#storageAction").on("click", function() {
+
+    if(!storageManip){
+        //COPIES to clipboard
+            navigator.clipboard.writeText(exportData).then(() => {
+                console.log("Storage exported and copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+                // Fallback: just print it so you can manual copy
+                console.log(exportData); 
+            });
+
+    }else{
+        handleStorageAction()
+    }
+});
+
+function handleStorageAction() {
+    const importString = $("#storageTextArea").val().trim();
+
+    if (!importString) {
+        alert("Please paste your layout data first!");
+        return;
+    }
+
+    // --- STEP 1: CREATE A REAL BACKUP ---
+    // Spread the current localStorage into a new, independent object
+    const backupData = { ...localStorage };
+
+    try {
+        // --- STEP 2: TRY THE IMPORT ---
+        const dataObj = JSON.parse(importString);
+
+        localStorage.clear();
+
+        Object.keys(dataObj).forEach(key => {
+            localStorage.setItem(key, dataObj[key]);
+        });
+
+        alert("Import successful! The page will now reload.");
+        $("#storageModalOverlay").addClass("hidden");
+        location.reload();
+
+    } catch (e) {
+        // --- STEP 3: RESTORE ON FAILURE ---
+        console.error("Import failed, restoring old data:", e);
+        
+        localStorage.clear(); 
+        
+        // Loop through our backup object to put things back
+        Object.keys(backupData).forEach(key => {
+            localStorage.setItem(key, backupData[key]);
+        });
+
+        alert("Error: Invalid data. Your previous settings have been restored.");
+    }
+}
+
+
+
+
+
+//close overlays from outside clicking
+// =======================
+// CLICK OUTSIDE TO CLOSE
+// =======================
+
+$(".overlay").on("click", function(e) {
+    if (e.target === this) {
+        $(this).addClass("hidden");   // close THIS overlay
+        clear_iconCreation();
+    }
+});
+
+
+// =======================
+// PREVENT INSIDE CLICKS
+// =======================
+
+$(".modal").on("click", function(e) {
+    e.stopPropagation();
+});
+
+
+// =======================
+// ESC KEY TO CLOSE
+// =======================
+
+$(document).on("keydown", function(e) {
+    if (e.key === "Escape") {
+        $(".overlay").addClass("hidden"); // close all overlays
+        clear_iconCreation();
+    }
+});

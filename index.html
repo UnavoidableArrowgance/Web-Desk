@@ -61,8 +61,8 @@
             </aside>
 
 
-            <div id="iconModalOverlay" class="hidden">
-                <section id="iconModal" aria-labelledby="iconModalTitle" aria-modal="true" role="dialog">
+            <div id="iconModalOverlay" class="hidden overlay">
+                <section id="iconModal" class="modal" aria-labelledby="iconModalTitle" aria-modal="true" role="dialog">
 
                     <h2 id="iconModalTitle">Create Icon</h2>
 
@@ -158,6 +158,22 @@
             <div id="fullScreenControls" class="overDashboard">
                 <button id="fullscreenBtn" class="windowed">Fullscreen</button>
             </div>
+
+            <div id="externalButtons" class="overTopBar">
+                <button id="exportButton" class="external">Export</button>
+                <button id="importButton" class="external">Import</button>
+            </div>
+            <div id="storageModalOverlay" class="hidden overlay">
+                <section id="storageModal" class="modal">
+                    <h2 id="storageModalTitle">Export Layout</h2>
+                    <textarea id="storageTextArea"></textarea>
+                    <div id="storageModalActions">
+                        <button id="storageCancel">Cancel</button>
+                        <button id="storageAction">Copy</button>
+                    </div>
+                </section>
+            </div>
+
         </div>
     </main>
 </body>

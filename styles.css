@@ -848,7 +848,125 @@ a {
 
 
 /*#endregion*/
-/* #endregion*/
+/*#endregion*/
 
 
 
+
+
+/*#region import/export*/
+
+.overTopBar{
+    position: absolute;
+    z-index: 1000; /* high number, sits above most elements */
+}
+
+#externalButtons{
+    Top: 0.5rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    column-gap: 10px;
+}
+
+.external{
+    padding:3px;
+    background-color: green;
+    border-color: yellow;
+    color: white;
+}
+
+
+/* overlay (background dim) */
+#storageModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 3000;
+}
+
+/* modal box */
+#storageModal {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 12px;
+
+    width: 400px;
+    max-width: 90vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* title */
+#storageModalTitle {
+    text-align: center;
+    margin: 0;
+}
+
+/* textarea (10 lines, scrollable) */
+#storageTextArea {
+    width: 100%;
+    height: 15em;              /* ~10 lines */
+    resize: none;
+
+    padding: 6px;
+    font-size: 0.9rem;
+
+    color: #444;               /* slightly gray text */
+    background: #f9f9f9;
+
+    border: 2px solid #000;
+    border-radius: 6px;
+
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* buttons row */
+#storageModalActions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* optional: make buttons same width */
+#storageModalActions button {
+    min-width: 120px;
+    height: 30px;
+}
+
+#storageCancel{
+    background-color: var(--blue4);
+    color: var(--white);
+}
+#storageAction{
+    background-color: var(--blue2);
+
+}
+
+
+/*#endregion*/
+
+
+
+
+
+/*overlay to close the windowed sections*/
+.overlay {
+    position: fixed;
+    inset: 0; /* full screen */
+    background: rgba(0, 0, 0, 0.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 3000;
+}
