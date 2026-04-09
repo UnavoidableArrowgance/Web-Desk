@@ -51,6 +51,13 @@ $(document).ready(function() {
         // ✅ NEW (mode display sync)
         $("#modeDisplay").text(editMode ? "Mode: Edit" : "Mode: Active");
         $("#toggleMode").text(editMode ? "Switch to Active" : "Switch to Edit");
+
+        
+        const savedIcons = localStorage.getItem("dashboardIcons");
+
+        if (savedIcons) {
+            LoadPreviousDashboardLayout();
+        }
     }
 
 
@@ -131,6 +138,7 @@ $(document).ready(function() {
 
 
 });
+
 
 // Add Icon
 addIconBtn.addEventListener("click", function() {
