@@ -41,23 +41,55 @@
 
             <!-- Left sidebar buttons -->
             <aside id="dashboardSidebar">
-                <div id="backgroundColorTool">
 
-                    <button id="bgColorButton">
-                        Background
-                        <span id="colorPreview"></span>
+                <div id="backgroundColorTool" class="sidebarTool keepActive">
+                    <button id="bgColorButton" class="bgIconTool" type="button">
+                        <span class="toolText">Background</span>
                     </button>
-
                     <input type="color" id="bgColor">
-
                 </div>
-                <button id="toggleMode">Switch to Active</button>
-                <div id="modeDisplay">Mode: Edit</div>
-                <button id="addIcon">Add an Icon</button>
-                <button id="deleteTool">Delete Tool</button>
-                <button id="load">Load</button>
-                <button id="save">Save</button>
-                <button id="clearBoard">Clear Board</button>
+
+                <button id="toggleMode" class="modeTool" type="button">
+                    <span id="modeDisplay">Edit Mode</span>
+                    <span id="modeHint">tap to switch</span>
+                </button>
+
+                <button id="addIcon" class="sidebarTool addIconTool" type="button">
+                    <span class="toolPlus">+</span>
+                    <span class="toolText">Add<br>Icon</span>
+                </button>
+
+                <button id="deleteTool" class="sidebarTool deleteIconTool" type="button">
+                    <span class="deleteX">×</span>
+                    <span class="toolText deleteText">Delete</span>
+                </button>
+
+                <button id="load" class="sidebarTool keepActive" type="button">
+                    <svg class="loadIcon" viewBox="0 0 100 100">
+                        <path
+                            d="M 9 65 A 42 42 0 1 0 38 10"
+                            fill="none"
+                            stroke="black"
+                            stroke-width="7"
+                            stroke-linecap="round"
+                        />
+                        <polygon
+                            points="35,0 17,25 44,25"
+                            fill="black"
+                        />
+                    </svg>
+                    <span class="toolText loadText">Load</span>
+                </button>
+
+                <button id="save" class="sidebarTool keepActive" type="button">
+                    <img src="images/save-file.png" alt="Save" class="toolIconImg">
+                    <span class="toolText saveText">Save</span>
+                </button>
+
+                <button id="clearBoard" class="sidebarTool" type="button">
+                    Clear Board
+                </button>
+
             </aside>
 
 
@@ -68,12 +100,12 @@
 
                     <!-- top: mode switch -->
                     <div id="iconTypeSwitch">
-                        <label>
+                        <label class="iconTypeOption active">
                             <input type="radio" name="iconType" value="shape" checked>
                             Shape Icon
                         </label>
 
-                        <label>
+                        <label class="iconTypeOption">
                             <input type="radio" name="iconType" value="image">
                             Image Upload
                         </label>
@@ -109,9 +141,9 @@
                                 <option value="x">X</option>
                             </select>
 
-                            <label for="shapeColor">Shape Color</label>
+                            <label for="shapeColor">Color</label>
                             <div class="colorPickerRow">
-                                <button type="button" id="shapeColorButton">Choose Color</button>
+                                <button type="button" id="shapeColorButton">Change</button>
                                 <span id="shapeColorPreview" class="colorPreview"></span>
                                 <input type="color" id="shapeColor" value="#34c759">
                             </div>
@@ -127,12 +159,12 @@
 
                         <!-- bottom: shared fields -->
                         <div id="iconSharedFields">
-                            <label for="iconLabel">Display Label under Icon</label>
+                            <label for="iconLabel">Display Label</label>
                             <input type="text" id="iconLabel" placeholder="Label">
 
-                            <label for="textColor">Text Color</label>
+                            <label for="textColor">Color</label>
                             <div class="colorPickerRow">
-                                <button type="button" id="textColorButton">Choose Color</button>
+                                <button type="button" id="textColorButton">Change</button>
                                 <span id="textColorPreview" class="colorPreview"></span>
                                 <input type="color" id="textColor" value="#000000">
                             </div>
@@ -175,5 +207,6 @@
             </div>
 
         </div>
+        <div id="fullscreenModeText"></div>
     </main>
 </body>

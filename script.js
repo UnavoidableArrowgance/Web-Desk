@@ -39,18 +39,19 @@ $(document).ready(function() {
         const savedBackgroundColor = localStorage.getItem("dashboardBgColor");
         if (savedBackgroundColor) {
             dashboard.css("background-color", savedBackgroundColor);
-            preview.css("background-color", savedBackgroundColor);
+            BgColorButton.css("background-color", savedBackgroundColor);
             BgColorPicker.val(savedBackgroundColor);
         } else {
-            preview.css("background-color", BgColorPicker.val());
+            BgColorButton.css("background-color", BgColorPicker.val());
         }
 
         const editSaved = localStorage.getItem("editMode");
         editMode = editSaved === null ? true : editSaved === "true";
 
-        // ✅ NEW (mode display sync)
-        $("#modeDisplay").text(editMode ? "Mode: Edit" : "Mode: Active");
-        $("#toggleMode").text(editMode ? "Switch to Active" : "Switch to Edit");
+        //mode display sync
+        $("#modeDisplay").text(editMode ? "Edit Mode" : "Active Mode");
+        $("#modeHint").text("tap to switch");
+        updateModeButtonStyle();
 
         
         const savedIcons = localStorage.getItem("dashboardIcons");
@@ -71,7 +72,7 @@ $(document).ready(function() {
     BgColorPicker.on("input", function() {
         const color = $(this).val();
         dashboard.css("background-color", color);
-        preview.css("background-color", color);
+        BgColorButton.css("background-color", color);
         localStorage.setItem("dashboardBgColor", color);
     });
 
@@ -79,17 +80,22 @@ $(document).ready(function() {
     $("#toggleMode").on("click", function() {
         editMode = !editMode;
 
-        $("#modeDisplay").text(editMode ? "Mode: Edit" : "Mode: Active");
-        $("#toggleMode").text(editMode ? "Switch to Active" : "Switch to Edit");
+        $("#modeDisplay").text(editMode ? "Edit Mode" : "Active Mode");
+        $("#modeHint").text("tap to switch");
+        
+        updateModeButtonStyle();
+        updateSidebarVisibility();
 
-        // reset delete tool
-        deleteMode = false;
-        dashboard.css("cursor", "default");
-        dashboard.removeClass("deleteMode");
-        deleteTool.text("Delete Tool");
+        resetDeleteTool(true);
 
         localStorage.setItem("editMode", editMode);
         switchMode();
+
+        if (editMode){
+            fullScreenButton.css("background-color", "#fff3a6");
+        }else{
+            fullScreenButton.css("background-color", "#b8f5b8");
+        }
     });
 
     // save/load
@@ -110,7 +116,9 @@ $(document).ready(function() {
         if (!editMode) return;
 
         deleteMode = !deleteMode;
-        $("#deleteTool").text(deleteMode ? "Cancel Delete" : "Delete Tool");
+        
+        $("#deleteTool").toggleClass("deleteActive", deleteMode);
+        $("#deleteTool .deleteText").html(deleteMode ? "Cancel<br>Delete" : "Delete");
 
         if (deleteMode) {
             dashboard.css("cursor", "url('images/smallRedX.png') 15 12, auto");
@@ -129,25 +137,53 @@ $(document).ready(function() {
     updateButtons();
 
 
-// =======================
-// INITIALIZE DEFAULT PREVIEWS
-// =======================
+    // =======================
+    // INITIALIZE DEFAULT PREVIEWS
+    // =======================
     $("#shapeColorPreview").css("background-color", $("#shapeColor").val());
     $("#textColorPreview").css("background-color", $("#textColor").val());
     
+    function updateModeButtonStyle() {
+        $("#toggleMode")
+            .toggleClass("editModeButton", editMode)
+            .toggleClass("activeModeButton", !editMode);
+    }
+    function updateSidebarVisibility() {
+        $("#dashboardSidebar").toggleClass("activeMode", !editMode);
+    }
+    updateSidebarVisibility();
 
 
+    if (editMode){
+        fullScreenButton.css("background-color", "#fff3a6");
+    }else{
+        fullScreenButton.css("background-color", "#b8f5b8");
+    }
 });
 
+
+function resetDeleteTool(forceReset = false) {
+    if (!deleteMode && !forceReset) return;
+
+    deleteMode = false;
+
+    dashboard.css("cursor", "default");
+    dashboard.removeClass("deleteMode");
+
+    $("#deleteTool").removeClass("deleteActive");
+    $("#deleteTool .deleteText").html("Delete");
+}
+
+$(document).on("keydown", function (e) {
+    if (e.key === "Escape" && deleteMode) {
+        resetDeleteTool();
+    }
+});
 
 // Add Icon
 addIconBtn.addEventListener("click", function() {
 
-    // reset delete tool
-    deleteMode = false;
-    dashboard.css("cursor", "default");
-    dashboard.removeClass("deleteMode");
-    deleteTool.text("Delete Tool");
+    resetDeleteTool();
     
     $("#iconModalOverlay").removeClass("hidden");
     clear_iconCreation();
@@ -182,6 +218,9 @@ $("input[name='iconType']").on("change", function() {
         $("#iconPreviewShape").removeClass("hidden");
         $("#iconPreviewImage").addClass("hidden");
     }
+    // highlight selected option
+    $(".iconTypeOption").removeClass("active");
+    $(this).closest(".iconTypeOption").addClass("active");
 });
 
 
@@ -230,9 +269,6 @@ function resizeImageToDataURL(file, size = 128) {
 
                 ctx.clearRect(0, 0, size, size);
 
-                // OPTIONAL: background fill (remove if you want transparent)
-                // ctx.fillStyle = "#ffffff";
-                // ctx.fillRect(0, 0, size, size);
 
                 const aspect = img.width / img.height;
 
@@ -691,6 +727,24 @@ function clearBoard(){
 
 
 
+function showFullscreenText() {
+    const text = editMode ? "Edit Mode" : "Active Mode";
+    const el = $("#fullscreenModeText");
+
+    el.text(text);
+
+    // restart animation
+    el.removeClass("showFullscreenText");
+    void el[0].offsetWidth; // force reflow
+    el.addClass("showFullscreenText");
+
+    if (editMode){
+        el.css("background-color", "#ffe066");
+    }else{
+        el.css("background-color", "#7ee081");
+    }
+}
+
 
 
 function fullScreenFunction(){
@@ -707,6 +761,7 @@ function fullScreenFunction(){
     if(isFullScreen){ //just turned full screen from button
         fullScreenButton.addClass("fullScreened")
         fullScreenButton.removeClass("windowed")
+        showFullscreenText();
         if (editMode){
             fullScreenButton.text("(Edit Mode) Window");
         } else{
