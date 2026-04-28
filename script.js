@@ -166,7 +166,11 @@ function setup_cursorTooltip() {
     $(document).on("mouseenter", ".iconWrapper", function(e) {
         if (!showTips) return;
 
-        tooltip.text(editMode ? "Edit / Drag" : "Open");
+        if (deleteMode) {
+            tooltip.text("Click to Delete");
+        } else {
+            tooltip.text(editMode ? "Edit / Drag" : "Open");
+        }
 
         tooltip.css({
             opacity: "1",
@@ -371,6 +375,7 @@ function action_on_deleteTool() {
     if (!editMode) return;
 
     deleteMode = !deleteMode;
+    $("#cursorTooltip").css("opacity", "0");
 
     button_deleteTool.toggleClass("deleteActive", deleteMode);
     $("#deleteTool .deleteText").html(deleteMode ? "Cancel<br>Delete" : "Delete");
@@ -836,6 +841,7 @@ function renderIcon(icon) {
         }
 
         if (deleteMode) {
+            $("#cursorTooltip").css("opacity", "0");
             wrapper.remove();
 
             const id = parseInt(wrapper.dataset.id);
