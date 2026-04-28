@@ -252,7 +252,6 @@ body {
     #navigation ul {
         gap: calc((130vw - 670px) /  2.28);
     }
-
 }
 
 
@@ -312,7 +311,500 @@ body {
     box-shadow: 5px 5px 0 var(--blue3);
 }
 
-/* Footer Layout (NOT scoped) */
+/* Responsive cleanup */
+@media screen and (max-width: 1000px) {
+    #summaryPage #summaryHeader,
+    #summaryPage #purpose,
+    #summaryPage #author {
+        width: 80%;
+        padding: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 625px) {
+    #summaryPage {
+        background:var(--white);
+    }
+}
+
+/* #endregion */
+
+
+
+
+/* #region About Page */
+
+#aboutPage {
+    background:
+        linear-gradient(90deg, var(--blue3) 0 5%, transparent 5% 95%, var(--blue3) 95% 100%),
+        var(--white);
+
+    font-family: Inter, Arial, sans-serif;
+}
+
+/* #region About Sidebar*/
+
+#sidebarGuide {
+    width: 80%;
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 2rem 3rem;
+
+    text-align: center;
+
+    background: var(--gray1);
+    border-right: 6px solid var(--gray3);
+    box-shadow: 6px 6px 0 var(--gray3);
+}
+
+#sidebarGuide h2 {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+#sidebarGuide > p {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+#sidebarGuideContent {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+#sidebarGuideImage {
+    width: 100%;
+    height: auto;
+
+    max-height: none;
+    object-fit: contain;
+    transform: translateY(-25px);
+}
+
+#sidebarGuideList {
+    counter-reset: sidebarStep;
+    list-style: none;
+    text-align: left;
+}
+
+#sidebarGuideList li {
+    counter-increment: sidebarStep;
+    position: relative;
+
+    padding-left: 3.25rem;
+    margin-bottom: 1.35rem;
+
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+#sidebarGuideList li::before {
+    content: counter(sidebarStep);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 1.8rem;
+    height: 1.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: #0057d9;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+/* main title (e.g., "Switch Mode") */
+#sidebarGuideList > li > strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+}
+
+/* main description line */
+#sidebarGuideList .mainLine {
+    display: block;
+    font-weight: 700;
+}
+
+/* sub lines */
+#sidebarGuideList .subLine {
+    display: block;
+    margin-left: 0.5rem;
+    font-size: 0.95em;
+    opacity: 0.9;
+}
+
+/* ensure inline labels stay bold and visible */
+#sidebarGuideList .subLine strong {
+    font-weight: 800;
+    opacity: 1;
+    color: black;
+}
+
+/* #endregion */
+
+/*#region Icon Popup about*/
+
+/*#region Shape and general Popup*/
+#iconPopupGuide {
+    width: 80%;  
+    max-width: 1400px;  
+    margin: 3rem auto;
+    padding: 2rem 3rem;
+
+    text-align: center;
+
+    background: var(--gray1);
+    border-right: 6px solid var(--gray3);
+    box-shadow: 6px 6px 0 var(--gray3);
+}
+
+#iconPopupGuide h2 {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+#iconPopupGuide > p {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+#iconPopupGuideContent {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;  /* 🔥 more space to image */
+    gap: 3rem;
+    align-items: center;
+}
+
+#iconPopupGuideShape {
+    width: 100%;
+    height: auto;
+}
+
+#iconPopupGuideList {
+    counter-reset: popupStep;
+    list-style: none;
+    text-align: left;
+}
+
+#iconPopupGuideList li {
+    counter-increment: popupStep;
+    position: relative;
+
+    padding-left: 3.25rem;
+    margin-bottom: 1.35rem;
+
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+#iconPopupGuideList li::before {
+    content: counter(popupStep);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 1.8rem;
+    height: 1.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: #0057d9;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+#iconPopupGuideList strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+}
+
+#iconPopupGuideList span {
+    display: block;
+}
+/*#endregion*/
+
+/* #region Image Popup */
+
+#iconPopupImageContent {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 3rem;
+    align-items: center;
+
+    margin-top: 3rem;
+    padding-top: 0.5rem;
+}
+
+#iconPopupGuideImageUpload {
+    width: 100%;
+    height: auto;
+}
+
+#iconPopupGuideImageList {
+    counter-reset: imagePopupStep 8;
+    list-style: none;
+    text-align: left;
+}
+
+#iconPopupGuideImageList li {
+    counter-increment: imagePopupStep;
+    position: relative;
+
+    padding-left: 3.25rem;
+    margin-bottom: 1.35rem;
+
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+#iconPopupGuideImageList li::before {
+    content: counter(imagePopupStep);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 1.8rem;
+    height: 1.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: #0057d9;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+#iconPopupGuideImageList strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+}
+
+#iconPopupGuideImageList span {
+    display: block;
+}
+
+/* #endregion */
+
+/* #region Other Buttons Guide */
+
+#otherButtonsGuide {
+    width: 85%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem 3rem;
+
+    text-align: center;
+
+    background: var(--gray1);
+    border-right: 6px solid var(--gray3);
+    box-shadow: 6px 6px 0 var(--gray3);
+}
+
+#otherButtonsGuide h2 {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+#otherButtonsGuide > p {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+#otherButtonsGuideContent {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+#otherButtonsGuideImage {
+    width: 100%;
+    height: auto;
+}
+
+#otherButtonsGuideList {
+    counter-reset: otherButtonsStep;
+    list-style: none;
+    text-align: left;
+}
+
+#otherButtonsGuideList li {
+    counter-increment: otherButtonsStep;
+    position: relative;
+
+    padding-left: 3.25rem;
+    margin-bottom: 1.35rem;
+
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+#otherButtonsGuideList li::before {
+    content: counter(otherButtonsStep);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 1.8rem;
+    height: 1.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: #0057d9;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+#otherButtonsGuideList > li > strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+}
+
+#otherButtonsGuideList span {
+    display: block;
+}
+
+/* #endregion */
+
+/* #region Export Import Guide */
+
+#exportImportGuide {
+    width: 80%;
+    max-width: 1100px;
+    margin: 3rem auto;
+    padding: 2rem 3rem;
+
+    text-align: center;
+
+    background: var(--gray1);
+    border-right: 6px solid var(--gray3);
+    box-shadow: 6px 6px 0 var(--gray3);
+}
+
+#exportImportGuide h2 {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+#exportImportGuide > p {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+#exportImportGuideContent {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+#exportImportGuideImage {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+}
+
+#exportImportGuideList {
+    counter-reset: exportImportStep;
+    list-style: none;
+    text-align: left;
+}
+
+#exportImportGuideList li {
+    counter-increment: exportImportStep;
+    position: relative;
+
+    padding-left: 3.25rem;
+    margin-bottom: 1.35rem;
+
+    font-size: 1.15rem;
+    line-height: 1.4;
+}
+
+#exportImportGuideList li::before {
+    content: counter(exportImportStep);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 1.8rem;
+    height: 1.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: #0057d9;
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+#exportImportGuideList > li > strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 0.25rem;
+}
+
+#exportImportGuideList span {
+    display: block;
+}
+
+/* #endregion */
+
+/* #endregion */
+
+@media screen and (max-width: 625px) {
+    #aboutPage {
+        background:var(--white);
+    }
+}
+
+/* #endregion */
+
+/* #region Footer Layout */
 #footer {
     padding: 2rem;
     margin-top: 3rem;
@@ -352,6 +844,10 @@ body {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 var(--black);
 }
+#footerNav a:focus {
+    transform: translate(3.5px, 3.5px);
+    box-shadow: .5px .5px 0 var(--black);
+}
 
 /* Active Button */
 #footerNav a.active {
@@ -365,16 +861,6 @@ body {
     text-align: center;
     font-size: 1rem;
     color: var(--white);
-}
-
-/* Responsive cleanup */
-@media screen and (max-width: 1000px) {
-    #summaryPage #summaryHeader,
-    #summaryPage #purpose,
-    #summaryPage #author {
-        width: 80%;
-        padding: 1.5rem;
-    }
 }
 
 /* #endregion */
@@ -411,18 +897,18 @@ body {
 
     display: grid;
     grid:
-        "background background"
-        "mode       mode"
-        "delete     add"
-        "load       save"
-        "clear      clear"
+        "background background" auto
+        "mode       mode"       auto
+        "delete     add"        auto
+        "load       save"       auto
+        "clear      clear"      auto
+        ".          ."          1fr
+        "gridSnap   gridSnap"   auto
         / 95px 95px;
 
     row-gap: 0.75rem;
-    align-content: start;
+    align-content: stretch;
     justify-content: center;
-
-    
     justify-items: center;
     align-items: center;
 }
@@ -456,17 +942,15 @@ button.disabled {
 #bgColorButton:hover,
 #deleteTool:hover,
 #load:hover,
-#save:hover,
-#clearBoard:hover {
-    transform: scale(1.05);
+#save:hover {
+    transform: scale(1.1);
 }
 
 #bgColorButton:active,
 #deleteTool:active,
 #load:active,
-#save:active,
-#clearBoard:active {
-    transform: scale(0.95);
+#save:active {
+    transform: scale(0.90);
 }
 
 #dashboardSidebar.activeMode .sidebarTool:not(.keepActive) {
@@ -510,7 +994,7 @@ button.disabled {
 
 #bgColorButton .toolText {
     background: var(--white);
-    padding: 0.1rem 0.1rem;
+    padding: 0 0.1rem 0.2rem 0.1rem;
 
     font-weight: 900;
     line-height: 1;
@@ -556,14 +1040,6 @@ button.disabled {
     cursor: pointer;
 }
 
-#toggleMode:hover {
-    transform: scale(1.03);
-}
-
-#toggleMode:active {
-    transform: scale(0.97);
-}
-
 #modeDisplay {
     font-size: 1.35rem;
     font-weight: 900;
@@ -583,6 +1059,85 @@ button.disabled {
 #toggleMode.activeModeButton {
     background: #b8f5b8;
 }
+
+/*#region toggle mode effects*/
+
+/* shared mode button polish */
+#toggleMode {
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+/* edit mode */
+#toggleMode.editModeButton {
+    background: #fff3a6;
+    border: 3px solid #d6a800;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.9);
+}
+
+#toggleMode.editModeButton:hover {
+    transform: scale(1.05);
+    border-color: #ffcc00;
+    box-shadow:
+        0 0 14px rgba(255, 204, 0, 1),
+        3px 3px 0 #8a6a00;
+}
+
+#toggleMode.editModeButton:active {
+    transform: scale(0.94);
+    box-shadow:
+        inset 0 0 10px rgba(255, 170, 0, 0.9),
+        0 0 6px rgba(255, 170, 0, 0.9);
+}
+
+/* active mode */
+#toggleMode.activeModeButton {
+    background: #b8f5b8;
+    border: 3px solid #208a20;
+    box-shadow: 0 0 8px rgba(50, 205, 50, 0.8);
+}
+
+#toggleMode.activeModeButton:hover {
+    transform: scale(1.04);
+    border-color: #32cd32;
+    box-shadow:
+        0 0 14px rgba(50, 205, 50, 1),
+        3px 3px 0 #126112;
+}
+
+#toggleMode.activeModeButton:active {
+    transform: scale(0.95);
+    box-shadow:
+        inset 0 0 10px rgba(0, 128, 0, 0.9),
+        0 0 6px rgba(0, 128, 0, 0.9);
+}
+
+/* pulse when mode changes */
+#toggleMode.modePulse {
+    animation: modePulse 0.45s ease;
+}
+
+@keyframes modePulse {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    45% {
+        transform: scale(1.08);
+        filter: brightness(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+/*#endregion*/
+
 /* #endregion */
 
 /* #region Add Icon (ONLY full button style) */
@@ -776,10 +1331,156 @@ button.disabled {
 
 #clearBoard {
     grid-area: clear;
+    position: relative;
+
+    width: 170px;
+    height: 95px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    overflow: hidden;
+    
+    transform: translateY(-8px); /* move up */
+}
+
+.clearShape {
+    position: absolute;
+
+    width: 170px;
+    height: 70px;
+
+    background: var(--gray4);
+
+    clip-path: polygon(
+        0% 50%,   /* left point */
+
+        20% 0%,
+        28.571% 15%,
+        37.143% 0%,
+        45.714% 15%,
+        54.286% 0%,
+        62.857% 15%,
+        71.429% 0%,
+        80% 15%,
+
+        97% 50%,  /* right point */
+
+        80% 85%,
+        71.429% 100%,
+        62.857% 85%,
+        54.286% 100%,
+        45.714% 85%,
+        37.143% 100%,
+        28.571% 85%,
+        20% 100%
+    );
+}
+
+#clearBoard:hover {
+    transform: translateY(-8px) scale(1.05);
+}
+
+#clearBoard:active {
+    transform: translateY(-8px) scale(0.95);
+}
+
+
+.clearText {
+    position: relative;
+    z-index: 2;
+
+    color: var(--white);
+    background: transparent;
+
+    font-size: 1.15rem;
+    font-weight: 900;
+    line-height: 1;
+    white-space: nowrap;
+
+    overflow: hidden;
+}
+
+.clearText::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: var(--gray4);
+    transform: translateX(-100%);
+}
+
+#clearBoard:hover .clearText::after {
+    animation: wipeOutThenFadeIn 0.8s ease-in-out;
+}
+
+@keyframes wipeOutThenFadeIn {
+    0% {
+        transform: translateX(-100%);
+        opacity: 1;
+    }
+
+    55% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+
+    75% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(0%);
+        opacity: 0;
+    }
 }
 
 /* #endregion */
 
+/* #region Grid Snap */
+
+#gridSnapToggle {
+    grid-area: gridSnap;
+
+    width: 165px;
+    height: 55px;
+
+    border: 3px solid black;
+
+    /* 🔥 grid line pattern */
+    background-color: white;
+    background-image:
+        linear-gradient(to right, black 1px, transparent 1px),
+        linear-gradient(to bottom, black 1px, transparent 1px);
+
+    background-size: 16px 16px;
+
+    font-weight: 900;
+    cursor: pointer;
+    transform: translateY(-12px);
+}
+
+#gridSnapToggle:hover {
+    transform: scale(1.04) translateY(-12px);
+}
+
+#gridSnapToggle:active {
+    transform: scale(0.96) translateY(-12px);
+}
+
+#gridSnapText {
+    font-size: 1rem ;
+    background: var(--white);
+    padding: 0 0.25rem;
+}
+
+/* #endregion */
 
 /* #region Fullscreen */
 
@@ -1475,7 +2176,7 @@ a {
 
 @keyframes fadeOutText {
     0%   { opacity: 0; }
-    15%   { opacity: 0.7; }
+    30%   { opacity: 0.5; }
     100% { opacity: 0; }
 }
 

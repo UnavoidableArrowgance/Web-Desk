@@ -22,7 +22,7 @@
 
 </head>
 
-<body>
+<body id = "aboutPage">
     <h1  class="visually-hidden">Web Desk Summary</h1>
     <header id="topBar">
         <!-- writing a banner with a nav that resembles tabs themselves -->
@@ -39,7 +39,131 @@
     </header>
 
     <main>
+        <section id="sidebarGuide">
 
+            <h2>Left Side Bar Overview</h2>
+            <p>Everything you need to build, manage, and customize your dashboard.</p>
+
+            <div id="sidebarGuideContent">
+
+                <!-- LEFT: your image -->
+                <img 
+                    src="images/sideBarShort.jpg" 
+                    alt="Web Desk sidebar labeled with numbers"
+                    id="sidebarGuideImage"
+                >
+
+                <!-- RIGHT: descriptions -->
+                <ol id="sidebarGuideList">
+                    <li><strong>Background</strong> Change the background color.</li>
+                    <li>
+                        <strong>Switch Mode</strong>
+                        <span class="mainLine">Toggle between Edit Mode and Active Mode.</span>
+                        <span class="subLine"><strong>Edit Mode:</strong> Drag icons to arrange your dashboard.</span>
+                        <span class="subLine"><strong>Active Mode:</strong> Click an icon to open its linked website.</span>
+                    </li>
+                    <li><strong>Delete</strong> Remove selected icons.</li>
+                    <li><strong>Add Icon</strong> Create a new icon (see next section for Icon creation menu).</li>
+                    <li><strong>Load</strong> Load a saved layout.</li>
+                    <li><strong>Save</strong> Save your current layout.</li>
+                    <li><strong>Clear Board</strong> Remove all icons.</li>
+                    <li><strong>Grid Snap</strong> Align icons to a grid.</li>
+                </ol>
+
+            </div>
+
+        </section>
+        <section id="iconPopupGuide">
+
+            <h2>Icon Pop-up Overview</h2>
+            <p>This menu is used to create a new icon for your dashboard.</p>
+
+            <div id="iconPopupGuideContent">
+
+                <img 
+                    id="iconPopupGuideShape"
+                    src="images/shapePopup.jpg"
+                    alt="Create icon shape popup with numbered labels"
+                >
+
+                <ol id="iconPopupGuideList">
+                    <li><strong>Icon Type</strong><span>Choose between a shape icon or an uploaded image.</span></li>
+                    <li><strong>Shape Preview</strong><span>Shows what the shape will look like before creating it.</span></li>
+                    <li><strong>Shape</strong><span>Select the shape used for the icon.</span></li>
+                    <li><strong>Shape Color</strong><span>Change the color of the icon shape.</span></li>
+                    <li><strong>Display Label</strong><span>Set the text shown under the icon.</span></li>
+                    <li><strong>Text Color</strong><span>Change the label text color.</span></li>
+                    <li><strong>Link</strong><span>Add the website the icon should open.</span></li>
+                    <li><strong>Create / Cancel</strong><span>Create the icon or close the pop-up without saving.</span></li>
+                </ol>
+
+            </div>
+
+            <div id="iconPopupImageContent">
+
+                <img 
+                    id="iconPopupGuideImageUpload"
+                    src="images/imagePopupTop.jpg"
+                    alt="Create icon image upload popup with numbered labels"
+                >
+
+                <ol id="iconPopupGuideImageList">
+                    <li><strong>Image Preview</strong><span>Shows what the image will look like before creating it. The upload is converted to 128 × 128 pixels while keeping its image ratio.</span></li>
+                    <li><strong>Image Selection</strong><span>Opens your file window to select your image.</span></li>
+                </ol>
+
+            </div>
+
+        </section>
+        <section id="otherButtonsGuide">
+
+            <h2>Other Buttons Overview</h2>
+            <p>These buttons help with saving layouts, importing data, and switching window modes.</p>
+
+            <div id="otherButtonsGuideContent">
+
+                <img 
+                    id="otherButtonsGuideImage"
+                    src="images/otherButtons.jpg"
+                    alt="Other Web Desk buttons with numbered labels"
+                >
+
+                <ol id="otherButtonsGuideList">
+                    <li><strong>Export</strong><span>Copies your saved Web Desk data so you can back it up or move it to another browser.</span></li>
+                    <li><strong>Import</strong><span>Lets you paste previously exported Web Desk data back into the app.</span></li>
+                    <li><strong>Fullscreen</strong><span>Expands the dashboard area and hides the top bar and sidebar.</span></li>
+                    <li><strong>Exit Full Screen, currently in edit mode</strong><span>Exit Expanded Dashboard, returning top and side bar, showing current mode while in fullScreen as Edit Mode.</span></li>
+                    <li><strong>Exit Full Screen, currently in active mode</strong><span>Exit Expanded Dashboard, returning top and side bar, showing current mode while in fullScreen as Active Mode.</span></li>
+                </ol>
+
+            </div>
+
+        </section>
+        <section id="exportImportGuide">
+
+            <h2>Export & Import Layout</h2>
+            <p>Save your dashboard or load a previously saved layout.</p>
+
+            <div id="exportImportGuideContent">
+
+                <img 
+                    id="exportImportGuideImage"
+                    src="images/exportImportPopup.jpg"
+                    alt="Export and Import popup with numbered labels"
+                >
+
+                <ol id="exportImportGuideList">
+                    <li><strong>Export Data</strong><span>Displays your current dashboard data as text that can be copied.</span></li>
+                    <li><strong>Cancel Export</strong><span>Closes the export window without copying the data.</span></li>
+                    <li><strong>Copy</strong><span>Copies the export data to your clipboard.</span></li>
+                    <li><strong>Import Data Area</strong><span>Paste your previously exported dashboard data here.</span></li>
+                    <li><strong>Cancel Import</strong><span>Closes the import window without applying changes.</span></li>
+                    <li><strong>Commit Import</strong><span>Applies the pasted data and loads the saved dashboard.</span></li>
+                </ol>
+
+            </div>
+
+        </section>
     </main>
 
     <footer id="footer">
