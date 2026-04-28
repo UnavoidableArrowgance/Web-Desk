@@ -9,16 +9,19 @@ let editMode = true;
 let deleteMode = false;
 let gridSnap = false;
 let isFullScreen = false;
+let showTips = true;
+let editingIconId = null;
+let iconWasDragged = false;
 
-let xDashboardMin = 160;
+let xDashboardMin = 190;
 let xDashboardMax = window.innerWidth - 200;
-let yDashboardMin = 90;
-let yDashboardMax = window.innerHeight - 140;
+let yDashboardMin = 80;
+let yDashboardMax = window.innerHeight - 190;
 
 
         
-let gridCellx = 150;
-let gridCelly = 150;
+let gridCellx = 170;
+let gridCelly = 170;
 
 let imageSize = 128;
 
@@ -90,6 +93,8 @@ const button_storageAction = $("#storageAction");
 const button_export = $("#exportButton");
 const button_import = $("#importButton");
 
+const button_toggleTips = $("#toggleTipsBtn");
+
 const text_fullscreenMode = $("#fullscreenModeText");
 
 const buttons_editOnly = [
@@ -116,6 +121,8 @@ function setup_dashboardStart() {
     setup_iconModal();
     setup_iconCreationControls();
     setup_globalCloseControls();
+    setup_cursorTooltip();
+    setup_toggleTips();
 
     update_buttons();
     update_modeUI();
@@ -140,6 +147,9 @@ function setup_dashboardInitialState() {
 
     const savedIcons = localStorage.getItem("dashboardIcons");
 
+    showTips = localStorage.getItem("showTips") !== "false";
+    updateTipsButton();
+
     if (savedIcons) {
         load_previousDashboard_layout();
     }
@@ -150,6 +160,52 @@ function setup_defaultPreviews() {
     preview_textColor.css("background-color", input_textColor.val());
 }
 
+function setup_cursorTooltip() {
+    const tooltip = $("#cursorTooltip");
+
+    $(document).on("mouseenter", ".iconWrapper", function(e) {
+        if (!showTips) return;
+
+        tooltip.text(editMode ? "Edit / Drag" : "Open");
+
+        tooltip.css({
+            opacity: "1",
+            left: e.clientX + "px",
+            top: e.clientY + "px"
+        });
+    });
+
+    $(document).on("mousemove", ".iconWrapper", function(e) {
+        if (!showTips) return;
+
+        tooltip.css({
+            left: e.clientX + "px",
+            top: e.clientY + "px"
+        });
+    });
+
+    $(document).on("mouseleave", ".iconWrapper", function() {
+        tooltip.css("opacity", "0");
+    });
+}
+
+function setup_toggleTips() {
+    button_toggleTips.on("click", function() {
+        showTips = !showTips;
+
+        localStorage.setItem("showTips", showTips);
+
+        updateTipsButton();
+        $("#cursorTooltip").css("opacity", "0");
+    });
+}
+
+function updateTipsButton() {
+    button_toggleTips
+        .text(showTips ? "Tips: ON" : "Tips: OFF")
+        .toggleClass("tipsOn", showTips)
+        .toggleClass("tipsOff", !showTips);
+}
 // #endregion
 
 
@@ -267,8 +323,6 @@ function action_on_backgroundColorChange() {
 
     container_dashboard.css("background-color", color);
     button_bgColor.css("background-color", color);
-
-    localStorage.setItem("dashboardBgColor", color);
 }
 
 function setup_modeButton() {
@@ -294,11 +348,20 @@ function setup_gridSnapButton(){
 function action_on_gridSnap(){
     gridSnap = !gridSnap;
 
-
-    $("#gridSnapText").text(
+    $("#readjustGridText").text(
         gridSnap ? "Grid Snap: ON" : "Grid Snap: OFF"
     );
+
+    if (gridSnap) {
+        button_gridSnapToggle.css(
+            "background-image",
+            "linear-gradient(to right, black 1px, transparent 1px), linear-gradient(to bottom, black 1px, transparent 1px)"
+        );
+    } else {
+        button_gridSnapToggle.css("background-image", "none");
+    }
 }
+
 
 function setup_deleteButton() {
     button_deleteTool.on("click", action_on_deleteTool);
@@ -400,6 +463,7 @@ function update_buttonEnabled(...buttons) {
 function update_buttons() {
     update_buttonEnabled(...buttons_editOnly);
 }
+
 
 // #endregion
 
@@ -504,6 +568,11 @@ function setup_shapePicker() {
 }
 
 function clear_iconCreation() {
+    editingIconId = null;
+
+    $("#iconModalTitle").text("Create Icon");
+    button_createIconConfirm.text("Create Icon");
+
     $("input[name='iconType'][value='shape']").prop("checked", true);
 
     $(".iconTypeOption").removeClass("active");
@@ -535,6 +604,55 @@ function clear_iconCreation() {
     input_iconLink.val("");
 }
 
+function open_iconEditModal(iconId) {
+    const icon = get_iconById(iconId);
+
+    if (!icon) {
+        console.error("Icon not found:", iconId);
+        return;
+    }
+
+    editingIconId = iconId;
+    reset_deleteTool();
+
+    overlay_iconModal.removeClass("hidden");
+
+    $("#iconModalTitle").text("Edit Icon");
+    button_createIconConfirm.text("Save Changes");
+
+    input_iconLabel.val(icon.name);
+    input_iconLink.val(icon.url);
+    input_textColor.val(icon.textColor);
+    preview_textColor.css("background-color", icon.textColor);
+
+    $("input[name='iconType'][value='" + icon.type + "']")
+        .prop("checked", true)
+        .trigger("change");
+
+    if (icon.type === "image") {
+        preview_iconImage
+            .attr("src", icon.imgSrc)
+            .removeClass("hidden");
+
+        preview_iconShape.addClass("hidden");
+    } else {
+        select_shape.val(icon.shape);
+        input_shapeColor.val(icon.shapeColor);
+        preview_shapeColor.css("background-color", icon.shapeColor);
+
+        preview_iconShape
+            .attr("class", "iconShape " + icon.shape)
+            .css("background-color", icon.shapeColor)
+            .removeClass("hidden");
+
+        preview_iconImage
+            .attr("src", "")
+            .addClass("hidden");
+    }
+
+    input_iconImageUpload.val("");
+}
+
 function action_on_createIconConfirm() {
     const label = input_iconLabel.val().trim();
     const link = input_iconLink.val().trim();
@@ -554,45 +672,57 @@ function action_on_createIconConfirm() {
         return;
     }
 
-    if (type === "image" && !imageFile) {
+    const iconData = {
+        name: label,
+        url: normalize_url(link),
+        type: type,
+        shape: shape,
+        shapeColor: shapeColor,
+        textColor: textColor,
+        imgSrc: ""
+    };
+
+    if (type === "image") {
+        if (imageFile) {
+            resizeImageToDataURL(imageFile, imageSize)
+                .then(function(resizedDataURL) {
+                    iconData.imgSrc = resizedDataURL;
+                    save_iconCreateOrEdit(iconData);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                    alert("There was a problem processing the image.");
+                });
+
+            return;
+        }
+
+        if (editingIconId !== null) {
+            const existingIcon = get_iconById(editingIconId);
+
+            if (existingIcon && existingIcon.type === "image" && existingIcon.imgSrc) {
+                iconData.imgSrc = existingIcon.imgSrc;
+                save_iconCreateOrEdit(iconData);
+                return;
+            }
+        }
+
         alert("Please upload an image.");
         return;
     }
 
-    if (type === "image") {
-        resizeImageToDataURL(imageFile, imageSize)
-            .then(function(resizedDataURL) {
-                add_iconToDashboard({
-                    name: label,
-                    url: normalize_url(link),
-                    type: type,
-                    shape: shape,
-                    shapeColor: shapeColor,
-                    textColor: textColor,
-                    imgSrc: resizedDataURL
-                });
+    save_iconCreateOrEdit(iconData);
+}
 
-                overlay_iconModal.addClass("hidden");
-                clear_iconCreation();
-            })
-            .catch(function(error) {
-                console.error(error);
-                alert("There was a problem processing the image.");
-            });
+function save_iconCreateOrEdit(iconData) {
+    if (editingIconId === null) {
+        add_iconToDashboard(iconData);
     } else {
-        add_iconToDashboard({
-            name: label,
-            url: normalize_url(link),
-            type: type,
-            shape: shape,
-            shapeColor: shapeColor,
-            textColor: textColor,
-            imgSrc: ""
-        });
-
-        overlay_iconModal.addClass("hidden");
-        clear_iconCreation();
+        update_iconOnDashboard(editingIconId, iconData);
     }
+
+    overlay_iconModal.addClass("hidden");
+    clear_iconCreation();
 }
 
 // #endregion 
@@ -622,6 +752,39 @@ function add_iconToDashboard(iconData) {
     renderIcon(newIcon);
 }
 
+function get_iconById(iconId) {
+    return icons.find(icon => icon.id === iconId) || null;
+}
+
+function update_iconOnDashboard(iconId, iconData) {
+    const icon = get_iconById(iconId);
+
+    if (!icon) {
+        console.error("Could not update missing icon:", iconId);
+        return;
+    }
+
+    icon.name = iconData.name;
+    icon.url = iconData.url;
+    icon.type = iconData.type;
+    icon.shape = iconData.shape;
+    icon.shapeColor = iconData.shapeColor;
+    icon.textColor = iconData.textColor;
+    icon.imgSrc = iconData.imgSrc;
+
+    rerender_icon(iconId);
+}
+
+function rerender_icon(iconId) {
+    const icon = get_iconById(iconId);
+    const oldWrapper = document.querySelector('.iconWrapper[data-id="' + iconId + '"]');
+
+    if (!icon || !oldWrapper) return;
+
+    oldWrapper.remove();
+    renderIcon(icon);
+}
+
 function renderIcon(icon) {
     const wrapper = document.createElement("div");
     wrapper.className = "iconWrapper";
@@ -648,7 +811,12 @@ function renderIcon(icon) {
     label.style.color = icon.textColor;
 
     if (editMode) {
-        wrapper.appendChild(visual);
+        const visualContainer = document.createElement("div");
+        visualContainer.className = "iconVisual";
+
+        visualContainer.appendChild(visual);
+
+        wrapper.appendChild(visualContainer);
         wrapper.appendChild(label);
     } else {
         const link = document.createElement("a");
@@ -662,6 +830,11 @@ function renderIcon(icon) {
     }
 
     wrapper.addEventListener("click", function(e) {
+        if (iconWasDragged) {
+            e.stopPropagation();
+            return;
+        }
+
         if (deleteMode) {
             wrapper.remove();
 
@@ -675,6 +848,16 @@ function renderIcon(icon) {
             e.stopPropagation();
             return;
         }
+
+        if (editMode) {
+            const id = parseInt(wrapper.dataset.id);
+            open_iconEditModal(id);
+
+            $("#cursorTooltip").css("opacity", "0");
+
+            e.stopPropagation();
+            return;
+        }
     });
 
     container_dashboard.append(wrapper);
@@ -683,19 +866,20 @@ function renderIcon(icon) {
 
 function updateGridCells() {
     if (!isFullScreen) {
-        gridCellx = 150;
-        gridCelly = 150;
+        gridCellx = 170;
+        gridCelly = 170;
     } else {
-        gridCellx = 150 * ((window.innerWidth + 200) / window.innerWidth);
-        gridCelly = 150 * ((window.innerHeight + 100) / window.innerHeight);
+        gridCellx = 170 * ((window.innerWidth + 200) / window.innerWidth);
+        gridCelly = 170 * ((window.innerHeight + 100) / window.innerHeight);
     }
 }
 
 function makeDraggable(wrapper) {
+    if (wrapper.dataset.draggableReady === "true") return;
+    wrapper.dataset.draggableReady = "true";
 
     wrapper.addEventListener("mousedown", function(e) {
         if (!editMode || deleteMode) return;
-
 
         const startX = parseFloat(wrapper.style.left);
         const startY = parseFloat(wrapper.style.top);
@@ -703,10 +887,20 @@ function makeDraggable(wrapper) {
         const offsetX = e.clientX;
         const offsetY = e.clientY;
 
+        let movedDuringThisDrag = false;
+
         const iconId = parseInt(wrapper.dataset.id);
         const iconObj = icons.find(icon => icon.id === iconId);
 
         function action_on_mouseMove(e) {
+            const mouseMoveX = Math.abs(e.clientX - offsetX);
+            const mouseMoveY = Math.abs(e.clientY - offsetY);
+
+            if (mouseMoveX > 3 || mouseMoveY > 3) {
+                movedDuringThisDrag = true;
+                iconWasDragged = true;
+            }
+
             let x = startX + (e.clientX - offsetX);
             let y = startY + (e.clientY - offsetY);
             
@@ -737,13 +931,21 @@ function makeDraggable(wrapper) {
             wrapper.style.left = x + "px";
             wrapper.style.top = y + "px";
 
-            iconObj.x = x;
-            iconObj.y = y;
+            if (iconObj) {
+                iconObj.x = x;
+                iconObj.y = y;
+            }
         }
 
         function action_on_mouseUp() {
             document.removeEventListener("mousemove", action_on_mouseMove);
             document.removeEventListener("mouseup", action_on_mouseUp);
+
+            if (movedDuringThisDrag) {
+                setTimeout(function() {
+                    iconWasDragged = false;
+                }, 150);
+            }
         }
 
         document.addEventListener("mousemove", action_on_mouseMove);
@@ -776,6 +978,7 @@ function switchMode() {
                 const a = document.createElement("a");
                 a.href = iconObj.url;
                 a.target = "_blank";
+                a.className = "iconLink";
 
                 while (wrapper.firstChild) {
                     a.appendChild(wrapper.firstChild);
@@ -797,12 +1000,23 @@ function clearBoard() {
 
 function save_currentDashboard_layout() {
     const iconString = JSON.stringify(icons);
+    const bgColor = input_bgColor.val();
 
     localStorage.setItem("dashboardIcons", iconString);
+    localStorage.setItem("dashboardBgColor", bgColor);
+
     console.log(icons);
 }
 
 function load_previousDashboard_layout() {
+    const savedBackgroundColor = localStorage.getItem("dashboardBgColor");
+
+    if (savedBackgroundColor) {
+        container_dashboard.css("background-color", savedBackgroundColor);
+        button_bgColor.css("background-color", savedBackgroundColor);
+        input_bgColor.val(savedBackgroundColor);
+    }
+
     const savedIcons = localStorage.getItem("dashboardIcons");
 
     if (!savedIcons) {
@@ -851,7 +1065,7 @@ function showFullscreenText() {
 
 function fullScreenFunction() {
     const topBarHeight = 90;
-    const sideBarWidth = 160;
+    const sideBarWidth = 190;
 
     let dashboardHeight = window.innerHeight - topBarHeight;
     let dashboardWidth = window.innerWidth - sideBarWidth;
@@ -874,6 +1088,7 @@ function fullScreenFunction() {
         container_topBar.addClass("hidden");
         container_sidebar.addClass("hidden");
         container_externalButtons.addClass("hidden");
+        $("#tooltipButton").addClass("hidden");
 
         document.querySelectorAll(".iconWrapper").forEach(function(wrapper) {
             let y = parseFloat(wrapper.style.top);
@@ -917,6 +1132,7 @@ function fullScreenFunction() {
         container_topBar.removeClass("hidden");
         container_sidebar.removeClass("hidden");
         container_externalButtons.removeClass("hidden");
+        $("#tooltipButton").removeClass("hidden");
 
         document.querySelectorAll(".iconWrapper").forEach(function(wrapper) {
             let y = parseFloat(wrapper.style.top);
@@ -961,15 +1177,15 @@ function setFullHeight() {
         xDashboardMin = 0;
         yDashboardMin = 0;
         xDashboardMax = window.innerWidth - 200;
-        yDashboardMax = window.innerHeight - 140;
+        yDashboardMax = window.innerHeight - 190;
     } else {
         container_fullDashboard.height((window.innerHeight - 108) + "px");
         container_fullDashboard.width((window.innerWidth - 1) + "px");
 
-        xDashboardMin = 160;
-        yDashboardMin = 90;
+        xDashboardMin = 190;
+        yDashboardMin = 80;
         xDashboardMax = window.innerWidth - 200;
-        yDashboardMax = window.innerHeight - 140;
+        yDashboardMax = window.innerHeight - 190;
     }
 }
 
