@@ -362,6 +362,66 @@ body {
     color: black;
 }
 
+
+
+/* #region About Intro */
+
+#aboutIntro {
+    width: 80%;
+    max-width: 1000px;
+    margin: 3rem auto 2rem auto;
+    padding: 2rem 3rem;
+
+    text-align: center;
+}
+
+#aboutIntro h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+#aboutIntro p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+#aboutSubNav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#aboutSubNav a {
+    padding: 0.6rem 1rem;
+
+    color: var(--black);
+    background: var(--white);
+    text-decoration: none;
+    font-weight: 900;
+
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--black);
+}
+
+#aboutSubNav a:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--black);
+}
+
+#aboutSubNav a:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+/* smooth jump scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* #endregion */
+
 /* #region About Sidebar*/
 
 #sidebarGuide {
@@ -455,64 +515,6 @@ body {
 /* #endregion */
 
 /*#region Icon Popup about*/
-
-/* #region About Intro */
-
-#aboutIntro {
-    width: 80%;
-    max-width: 1000px;
-    margin: 3rem auto 2rem auto;
-    padding: 2rem 3rem;
-
-    text-align: center;
-}
-
-#aboutIntro h1 {
-    font-size: 3rem;
-    font-weight: 900;
-    margin-bottom: 0.5rem;
-}
-
-#aboutIntro p {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-}
-
-#aboutSubNav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-#aboutSubNav a {
-    padding: 0.6rem 1rem;
-
-    color: var(--black);
-    background: var(--white);
-    text-decoration: none;
-    font-weight: 900;
-
-    border: 3px solid var(--black);
-    box-shadow: 4px 4px 0 var(--black);
-}
-
-#aboutSubNav a:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--black);
-}
-
-#aboutSubNav a:active {
-    transform: translate(4px, 4px);
-    box-shadow: none;
-}
-
-/* smooth jump scrolling */
-html {
-    scroll-behavior: smooth;
-}
-
-/* #endregion */
 
 
 /*#region Shape and general Popup*/
@@ -855,14 +857,32 @@ html {
 
 /* #endregion */
 
+
 /* #endregion */
 
-@media screen and (max-width: 625px) {
+@media screen and (max-width: 1000px) {
     #aboutPage {
         background:var(--white);
     }
+
+    #iconPopupGuideContent,#iconPopupImageContent, 
+    #otherButtonsGuideContent, #exportImportGuideContent{
+        display: flex;
+        flex-direction: column;
+    }
 }
 
+
+@media screen and (max-width: 680px) {
+    #sidebarGuideContent{
+        display: flex;
+        flex-direction: column;
+    }
+    #sidebarGuideImage {
+        width: auto;
+        height: 650px;
+    }
+}
 /* #endregion */
 
 /* #region Footer Layout */
