@@ -929,15 +929,17 @@ html {
 
 /* #region Dashboard */
 
+#screenSize{
+    width:100vw;
+    height:100vh;
+    overflow: hidden;
+}
 #fullDashboard {
     display: flex;
     flex-direction: row; 
-    height: calc(100vh - var(--topBarHeight) - 8px);
 }
 #dashboard {
     flex-grow: 1;
-    border: 2px solid #ccc;
-    min-height: 99.8%;
 }
 
 .overDashboard{
@@ -955,6 +957,8 @@ html {
     padding-top: 10px;
     width: 200px;
     border: 3px solid black;
+    border-top:none;
+    height: calc(100vh - var(--topBarHeight) - 16px);
 
     display: grid;
     grid:

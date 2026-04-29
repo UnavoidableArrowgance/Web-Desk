@@ -402,7 +402,6 @@ function setup_fullscreenButton() {
 
 function action_on_fullscreenToggle() {
     isFullScreen = !isFullScreen;
-    setFullHeight();
     fullScreenFunction();
     updateGridCells();
 }
@@ -1050,7 +1049,6 @@ function load_previousDashboard_layout() {
 
 // #endregion
 
-
 // #region Fullscreen
 
 function showFullscreenText() {
@@ -1069,15 +1067,67 @@ function showFullscreenText() {
     }
 }
 
+function getDashboardBounds(fullscreenMode) {
+    if (fullscreenMode) {
+        return {
+            xMin: 0,
+            yMin: -20,
+            xMax: window.innerWidth - 200,
+            yMax: window.innerHeight - 190
+        };
+    }
+
+    return {
+        xMin: 190,
+        yMin: 80,
+        xMax: window.innerWidth - 200,
+        yMax: window.innerHeight - 190
+    };
+}
+
+function moveIconValue(value, oldMin, oldMax, newMin, newMax) {
+    const oldRange = oldMax - oldMin;
+    const newRange = newMax - newMin;
+
+    if (oldRange === 0) return newMin;
+
+    let percent = (value - oldMin) / oldRange;
+
+    if (percent < 0) percent = 0;
+    if (percent > 1) percent = 1;
+
+    return newMin + (percent * newRange);
+}
+
+function moveIconsBetweenModes(oldFullscreenMode, newFullscreenMode) {
+    const oldBounds = getDashboardBounds(oldFullscreenMode);
+    const newBounds = getDashboardBounds(newFullscreenMode);
+
+    document.querySelectorAll(".iconWrapper").forEach(function(wrapper) {
+        let x = parseFloat(wrapper.style.left);
+        let y = parseFloat(wrapper.style.top);
+
+        x = moveIconValue(x, oldBounds.xMin, oldBounds.xMax, newBounds.xMin, newBounds.xMax);
+        y = moveIconValue(y, oldBounds.yMin, oldBounds.yMax, newBounds.yMin, newBounds.yMax);
+
+        wrapper.style.left = x + "px";
+        wrapper.style.top = y + "px";
+
+        const id = parseInt(wrapper.dataset.id);
+        const iconObj = icons.find(icon => icon.id === id);
+
+        if (iconObj) {
+            iconObj.x = x;
+            iconObj.y = y;
+        }
+    });
+}
+
 function fullScreenFunction() {
-    const topBarHeight = 90;
-    const sideBarWidth = 190;
+    const oldFullscreenMode = !isFullScreen;
+    const newFullscreenMode = isFullScreen;
 
-    let dashboardHeight = window.innerHeight - topBarHeight;
-    let dashboardWidth = window.innerWidth - sideBarWidth;
-
-    let yMultiplier = 1 + ((topBarHeight) / (dashboardHeight));
-    let xMultiplier = 1 + ((sideBarWidth) / (dashboardWidth));
+    moveIconsBetweenModes(oldFullscreenMode, newFullscreenMode);
 
     if (isFullScreen) {
         button_fullscreen.addClass("fullScreened");
@@ -1096,38 +1146,8 @@ function fullScreenFunction() {
         container_externalButtons.addClass("hidden");
         $("#tooltipButton").addClass("hidden");
 
-        document.querySelectorAll(".iconWrapper").forEach(function(wrapper) {
-            let y = parseFloat(wrapper.style.top);
-            let x = parseFloat(wrapper.style.left);
-
-            y = y - topBarHeight;
-            x = x - sideBarWidth;
-
-            y = (dashboardHeight - y) * yMultiplier;
-            y = window.innerHeight - y;
-
-            x = (dashboardWidth - x) * xMultiplier;
-            x = window.innerWidth - x;
-
-            if (x < xDashboardMin) x = xDashboardMin;
-            if (x > xDashboardMax) x = xDashboardMax;
-            if (y < yDashboardMin) y = yDashboardMin;
-            if (y > yDashboardMax) y = yDashboardMax;
-
-            wrapper.style.top = y + "px";
-            wrapper.style.left = x + "px";
-
-            const id = parseInt(wrapper.dataset.id);
-            const iconObj = icons.find(icon => icon.id === id);
-
-            if (iconObj) {
-                iconObj.x = x;
-                iconObj.y = y;
-            }
-        });
-
-        container_fullDashboard.height((window.innerHeight - 5) + "px");
-        container_fullDashboard.width((window.innerWidth - 1) + "px");
+        container_fullDashboard.height(window.innerHeight + "px");
+        container_fullDashboard.width(window.innerWidth + "px");
 
     } else {
         button_fullscreen.addClass("windowed");
@@ -1140,53 +1160,25 @@ function fullScreenFunction() {
         container_externalButtons.removeClass("hidden");
         $("#tooltipButton").removeClass("hidden");
 
-        document.querySelectorAll(".iconWrapper").forEach(function(wrapper) {
-            let y = parseFloat(wrapper.style.top);
-            let x = parseFloat(wrapper.style.left);
-
-            y = (window.innerHeight - y) * (1 / yMultiplier);
-            y = window.innerHeight - y;
-
-            x = (window.innerWidth - x) * (1 / xMultiplier);
-            x = window.innerWidth - x;
-
-            if (x < xDashboardMin) x = xDashboardMin;
-            if (x > xDashboardMax) x = xDashboardMax;
-            if (y < yDashboardMin) y = yDashboardMin;
-            if (y > yDashboardMax) y = yDashboardMax;
-
-            wrapper.style.top = y + "px";
-            wrapper.style.left = x + "px";
-
-            const id = parseInt(wrapper.dataset.id);
-            const iconObj = icons.find(icon => icon.id === id);
-
-            if (iconObj) {
-                iconObj.x = x;
-                iconObj.y = y;
-            }
-        });
-
-        container_fullDashboard.height((window.innerHeight - 105) + "px");
-        container_fullDashboard.width((window.innerWidth - 1) + "px");
+        container_fullDashboard.height((window.innerHeight - 100) + "px");
+        container_fullDashboard.width(window.innerWidth + "px");
     }
 
+    setFullHeight();
 }
 
 function setFullHeight() {
-    container_fullDashboard.height($(window).height());
-
     if (isFullScreen) {
-        container_fullDashboard.height((window.innerHeight - 5) + "px");
-        container_fullDashboard.width((window.innerWidth - 1) + "px");
+        container_fullDashboard.height(window.innerHeight + "px");
+        container_fullDashboard.width(window.innerWidth + "px");
 
         xDashboardMin = 0;
-        yDashboardMin = 0;
+        yDashboardMin = -20;
         xDashboardMax = window.innerWidth - 200;
         yDashboardMax = window.innerHeight - 190;
     } else {
-        container_fullDashboard.height((window.innerHeight - 108) + "px");
-        container_fullDashboard.width((window.innerWidth - 1) + "px");
+        container_fullDashboard.height((window.innerHeight - 100) + "px");
+        container_fullDashboard.width(window.innerWidth + "px");
 
         xDashboardMin = 190;
         yDashboardMin = 80;
