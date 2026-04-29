@@ -1,7 +1,6 @@
 "use strict";
 
 // #region Global State */
-
 const icons = [];
 
 let iconCount = 0;
@@ -139,7 +138,7 @@ function setup_dashboardInitialState() {
         button_bgColor.css("background-color", savedBackgroundColor);
         input_bgColor.val(savedBackgroundColor);
     } else {
-        button_bgColor.css("background-color", input_bgColor.val());
+        button_bgColor.css("background-color", "#fff");
     }
 
     const editSaved = localStorage.getItem("editMode");

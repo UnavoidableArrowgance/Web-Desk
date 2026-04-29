@@ -1033,6 +1033,7 @@ button.disabled {
 
 #backgroundColorTool {
     grid-area: background;
+    background: #ffffff;
 
     display: flex;
     justify-content: center;
@@ -1114,7 +1115,6 @@ button.disabled {
     font-weight: 900;
     pointer-events: none;
 }
-
 #modeHint {
     font-size: 0.95rem;
     font-weight: 600;
@@ -2309,9 +2309,20 @@ a {
 
     opacity: 0;
     pointer-events: none;
-    width: 150%;
-}
+    width: 100%;
 
+    text-wrap:wrap;
+}
+@media screen and (min-width: 1650px) {
+    #fullscreenModeText {
+        text-wrap:none;
+    }
+}
+@media screen and (max-width: 850px) {
+    #fullscreenModeText {
+        font-size: 8rem;
+    }
+}
 /* animation */
 .showFullscreenText {
     animation: fadeOutText 1.0s ease-out;
