@@ -333,7 +333,6 @@ body {
 
 
 /* #region About Page */
-
 #aboutPage {
     background:
         linear-gradient(90deg, var(--blue3) 0 5%, transparent 5% 95%, var(--blue3) 95% 100%),
@@ -418,6 +417,107 @@ body {
 /* smooth jump scrolling */
 html {
     scroll-behavior: smooth;
+}
+
+/* #endregion */
+
+/* #region Shortcut Tips */
+
+#shortcutTips {
+    width: 80%;
+    max-width: 620px;
+    margin: 2rem auto;
+    padding: 1.5rem 2rem;
+
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+
+    background: #fff3a6;
+    border: 4px solid var(--black);
+    box-shadow: 6px 6px 0 var(--gray3);
+}
+
+#shortcutIcon {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.bulbIcon {
+    width: 68px;
+    height: 98px;
+
+    fill: none;
+    stroke: var(--black);
+    stroke-width: 2.5;
+    transform: translateY(-20px);
+}
+
+#shortcutContent h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.75rem;
+    text-align: left;
+}
+
+.shortcutNote {
+    text-align: left;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.highlightShortcut {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+
+    background: var(--white);
+    border: 3px solid var(--black);
+    box-shadow: 3px 3px 0 var(--black);
+}
+
+.highlightShortcut strong {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 900;
+    margin-bottom: 0.2rem;
+}
+
+.highlightShortcut .shortcutLine {
+    display: grid;
+    grid-template-columns: 80px auto;
+    font-size: 0.95rem;
+}
+
+.osLabel {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+#shortcutGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+    text-align: left;
+}
+
+#shortcutGrid p {
+    line-height: 1.35;
+}
+
+#shortcutGrid strong {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 900;
+    margin-bottom: 0.2rem;
+}
+
+#shortcutGrid .shortcutLine {
+    display: grid;
+    grid-template-columns: 80px auto;
+    font-size: 0.95rem;
 }
 
 /* #endregion */
