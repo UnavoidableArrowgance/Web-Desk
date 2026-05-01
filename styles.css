@@ -125,10 +125,55 @@ table {
     --orchid: #DA70D6;
 
 
+    /* Extra UI color variables */
+    --summaryHeroLight: #EEF7FF;
+    --summaryHighlight: #FFF3A6;
+    --summaryFeatureLight: #F8FFFA;
+    --summaryWorkflowLight: #FFFDF2;
+
+    --stepBlue: #0057D9;
+
+    --modalGray: #F4F4F4;
+    --modalButtonGray: #DCDCDC;
+    --modalButtonHoverGray: #D0D0D0;
+
+    --inputWhite: #FFFFFF;
+    --textareaText: #444444;
+    --textareaBg: #F9F9F9;
+
+    --editModeBg: #FFF3A6;
+    --editModeBorder: #D6A800;
+    --editModeHover: #FFCC00;
+    --editModeShadow: #8A6A00;
+    --editModeGlow: rgba(255, 204, 0, 0.9);
+    --editModeGlowStrong: rgba(255, 204, 0, 1);
+    --editModeInsetGlow: rgba(255, 170, 0, 0.9);
+
+    --activeModeBg: #B8F5B8;
+    --activeModeBorder: #208A20;
+    --activeModeHover: #32CD32;
+    --activeModeShadow: #126112;
+    --activeModeGlow: rgba(50, 205, 50, 0.8);
+    --activeModeGlowStrong: rgba(50, 205, 50, 1);
+    --activeModeInsetGlow: rgba(0, 128, 0, 0.9);
+
+    --deleteLight: rgba(255, 0, 0, 0.08);
+    --overlayDark: rgba(0, 0, 0, 0.4);
+    --tooltipDark: rgba(20, 20, 20, 0.75);
+
+    --shapeBlue: #3498DB;
+    --shapeRed: #E74C3C;
+    --shapeGreen: #2ECC71;
+    --shapeYellow: #F1C40F;
+    --shapePurple: #9B59B6;
+    --shapeOrange: #E67E22;
+    --shapeTeal: #1ABC9C;
+    --shapeDark: #2C3E50;
+
     --primary-font: Arial, sans-serif;
     --secondary-font: Helvetica, sans-serif;
 
-    --topBarHeight: 100px
+    --topBarHeight: 100px;
 }
 
 
@@ -158,7 +203,7 @@ body {
 #topBar{
     display: flex;
     flex-direction: row;
-    background-color: #1E90FF;
+    background-color: var(--blue3);
     border-bottom: 3px solid var(--black);
     height: var(--topBarHeight);
 }
@@ -265,70 +310,310 @@ body {
         var(--white);
 }
 
-/* Main content sections */
+/* Outer card */
 #summaryPage #summaryHeader,
 #summaryPage #purpose,
+#summaryPage #workflow,
+#summaryPage #features,
+#summaryPage #desktopFocus,
 #summaryPage #author {
-    width: 60%;
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 2rem 3rem;
+    width: 68%;
+    max-width: 1000px;
+    margin: 2.5rem auto;
+    padding: 0.8rem;
 
-    background: var(--gray1);
+    background: var(--gray2);
     border-right: 6px solid var(--gray3);
+    border-bottom: 6px solid var(--gray3);
     box-shadow: 6px 6px 0 var(--gray3);
 }
 
-/* Section titles */
-#summaryPage #summaryHeader h2,
-#summaryPage #purpose h3,
-#summaryPage #author h3 {
-    font-size: 2.5rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-    border-bottom: 3px solid var(--gray6);
-    display: inline-block;
-    padding-bottom: 0.25rem;
+/* Inner content area */
+#summaryPage .summaryInner {
+    background: var(--white);
+    border: 3px solid var(--black);
+    padding: 2rem 2.25rem;
+    text-align: left;
 }
 
-/* Paragraphs */
-#summaryPage #summaryHeader p,
+/* Hero section */
+#summaryPage #summaryHeader {
+    background: var(--blue2);
+    border-right: 8px solid var(--blue3);
+    border-bottom: 8px solid var(--blue3);
+    box-shadow: 8px 8px 0 var(--gray3);
+}
+
+#summaryPage .summaryHeroInner {
+    background: linear-gradient(180deg, var(--white) 0%, var(--summaryHeroLight) 100%);
+    text-align: center;
+    padding: 2.3rem 2.5rem;
+}
+
+#summaryPage #summaryEyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.45rem 0.8rem;
+
+    background: var(--yellow3);
+    border: 3px solid var(--black);
+    box-shadow: 3px 3px 0 var(--black);
+
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+#summaryPage #summaryHeader h2 {
+    font-size: 4.8rem;
+    font-weight: 900;
+    line-height: 0.95;
+    margin-bottom: 0.9rem;
+
+    color: var(--black);
+    text-shadow:
+        3px 3px 0 var(--blue2),
+        6px 6px 0 var(--gray3);
+}
+
+/* THE important tagline */
+#summaryPage #summaryMainTagline {
+    display: inline-block;
+    margin: 0 auto 1.3rem auto;
+    padding: 0.8rem 1.2rem;
+
+    background: var(--summaryHighlight);
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--black);
+
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+#summaryPage #summaryIntro,
+#summaryPage #summarySubIntro {
+    max-width: 820px;
+    margin: 0 auto 1rem auto;
+
+    font-size: 1.25rem;
+    line-height: 1.5;
+}
+
+/* Section title styling */
+#summaryPage #purpose h3,
+#summaryPage #workflow h3,
+#summaryPage #features h3,
+#summaryPage #desktopFocus h3,
+#summaryPage #author h3 {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.25rem;
+
+    font-size: 2.4rem;
+    font-weight: 900;
+    border-bottom: 4px solid var(--black);
+}
+
+/* Different section accents */
+#summaryPage #purpose .summaryInner {
+    border-left: 12px solid var(--red1);
+}
+
+#summaryPage #workflow .summaryInner {
+    border-left: 12px solid var(--yellow2);
+}
+
+#summaryPage #features .summaryInner {
+    border-left: 12px solid var(--green2);
+}
+
+#summaryPage #desktopFocus .summaryInner {
+    border-left: 12px solid var(--purple3);
+}
+
+#summaryPage #author .summaryInner {
+    border-left: 12px solid var(--magenta);
+}
+
+/* General summary text */
 #summaryPage #purpose p,
+#summaryPage #workflow p,
+#summaryPage #features p,
+#summaryPage #desktopFocus p,
 #summaryPage #author p {
     font-size: 1.2rem;
-    line-height: 1.45;
-    max-width: 760px;
-    margin: 0 auto;
+    line-height: 1.6;
+    max-width: 780px;
+    margin-bottom: 1rem;
 }
 
-/* Author image */
+#summaryPage strong {
+    font-weight: 900;
+}
+
+/* Workflow cards */
+#summaryPage #workflowCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin: 0.75rem 0 1.5rem 0;
+}
+
+#summaryPage .workflowCard {
+    padding: 1.2rem;
+
+    background: var(--summaryWorkflowLight);
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--gray3);
+}
+
+#summaryPage .workflowStep {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--yellow2);
+    border: 3px solid var(--black);
+    border-radius: 50%;
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+#summaryPage .workflowCard h4 {
+    margin-bottom: 0.5rem;
+
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+#summaryPage .workflowCard p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.45;
+}
+
+#summaryPage .summaryHighlight {
+    padding: 1rem 1.2rem;
+
+    background: var(--summaryHighlight);
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--gray3);
+
+    font-size: 1.15rem;
+    line-height: 1.45;
+}
+
+/* Feature cards */
+#summaryPage #featureGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin-top: 0.75rem;
+}
+
+#summaryPage .featureCard {
+    padding: 1.2rem;
+
+    background: var(--summaryFeatureLight);
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--gray3);
+}
+
+#summaryPage .featureCard h4 {
+    margin-bottom: 0.5rem;
+
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+#summaryPage .featureCard p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.45;
+}
+
+/* Author section */
+#summaryPage .authorInner {
+    text-align: center;
+}
+
 #summaryPage #author img {
     width: 220px;
-    margin: 1.25rem auto;
+    margin: 1rem auto 1.25rem auto;
     display: block;
 
     border: 4px solid var(--black);
     box-shadow: 5px 5px 0 var(--blue3);
 }
 
-/* Responsive cleanup */
-@media screen and (max-width: 1000px) {
+#summaryPage .authorText {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Responsive */
+@media screen and (max-width: 1100px) {
     #summaryPage #summaryHeader,
     #summaryPage #purpose,
+    #summaryPage #workflow,
+    #summaryPage #features,
+    #summaryPage #desktopFocus,
     #summaryPage #author {
-        width: 80%;
+        width: 82%;
+    }
+
+    #summaryPage #summaryHeader h2 {
+        font-size: 3.8rem;
+    }
+
+    #summaryPage #summaryMainTagline {
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    #summaryPage #workflowCards,
+    #summaryPage #featureGrid {
+        grid-template-columns: 1fr;
+    }
+
+    #summaryPage .summaryInner {
         padding: 1.5rem;
+    }
+
+    #summaryPage #summaryHeader h2 {
+        font-size: 3rem;
+    }
+
+    #summaryPage #summaryMainTagline {
+        font-size: 1.35rem;
+    }
+
+    #summaryPage #summaryIntro,
+    #summaryPage #summarySubIntro,
+    #summaryPage #purpose p,
+    #summaryPage #workflow p,
+    #summaryPage #features p,
+    #summaryPage #desktopFocus p,
+    #summaryPage #author p {
+        font-size: 1.05rem;
     }
 }
 
 @media screen and (max-width: 625px) {
     #summaryPage {
-        background:var(--white);
+        background: var(--white);
     }
 }
 
 /* #endregion */
-
 
 
 
@@ -358,7 +643,7 @@ body {
 #aboutPage .subLine strong {
     font-weight: 800;
     opacity: 1;
-    color: black;
+    color: var(--black);
 }
 
 
@@ -434,7 +719,7 @@ html {
     gap: 1.5rem;
     align-items: start;
 
-    background: #fff3a6;
+    background: var(--summaryHighlight);
     border: 4px solid var(--black);
     box-shadow: 6px 6px 0 var(--gray3);
 }
@@ -596,8 +881,8 @@ html {
     align-items: center;
 
     border-radius: 50%;
-    background: #0057d9;
-    color: white;
+    background: var(--stepBlue);
+    color: var(--white);
 
     font-size: 1rem;
     font-weight: 900;
@@ -686,8 +971,8 @@ html {
     align-items: center;
 
     border-radius: 50%;
-    background: #0057d9;
-    color: white;
+    background: var(--stepBlue);
+    color: var(--white);
 
     font-size: 1rem;
     font-weight: 900;
@@ -754,8 +1039,8 @@ html {
     align-items: center;
 
     border-radius: 50%;
-    background: #0057d9;
-    color: white;
+    background: var(--stepBlue);
+    color: var(--white);
 
     font-size: 1rem;
     font-weight: 900;
@@ -844,8 +1129,8 @@ html {
     align-items: center;
 
     border-radius: 50%;
-    background: #0057d9;
-    color: white;
+    background: var(--stepBlue);
+    color: var(--white);
 
     font-size: 1rem;
     font-weight: 900;
@@ -937,8 +1222,8 @@ html {
     align-items: center;
 
     border-radius: 50%;
-    background: #0057d9;
-    color: white;
+    background: var(--stepBlue);
+    color: var(--white);
 
     font-size: 1rem;
     font-weight: 900;
@@ -1017,7 +1302,7 @@ html {
     font-size: 1.1rem;
     text-decoration: none;
 
-    border: 3px solid black;
+    border: 3px solid var(--black);
     box-shadow: 4px 4px 0 var(--black);
 }
 
@@ -1076,7 +1361,7 @@ html {
 #dashboardSidebar {
     padding-top: 10px;
     width: 200px;
-    border: 3px solid black;
+    border: 3px solid var(--black);
     border-top:none;
     height: calc(100vh - var(--topBarHeight) - 16px);
 
@@ -1153,7 +1438,7 @@ button.disabled {
 
 #backgroundColorTool {
     grid-area: background;
-    background: #ffffff;
+    background: var(--white);
 
     display: flex;
     justify-content: center;
@@ -1168,26 +1453,26 @@ button.disabled {
     justify-content: center;
     align-items: center;
 
-    border: 3px solid black;
+    border: 3px solid var(--black);
     border-radius: 50%;
 
     font-weight: bold;
     font-size: 1.3rem;
 
-    background: #ffffff;
+    background: var(--white);
     cursor: pointer;
 }
 
 .textOutline {
-    color: black;
-    -webkit-text-stroke: .2px white;
+    color: var(--black);
+    -webkit-text-stroke: .2px var(--white);
 
     /* fallback using shadow */
     text-shadow:
-        -1px -1px 0 white,
-         1px -1px 0 white,
-        -1px  1px 0 white,
-         1px  1px 0 white;
+        -1px -1px 0 var(--white),
+         1px -1px 0 var(--white),
+        -1px  1px 0 var(--white),
+         1px  1px 0 var(--white);
 }
 
 #bgColorButton:hover {
@@ -1242,11 +1527,11 @@ button.disabled {
 }
 
 #toggleMode.editModeButton {
-    background: #fff3a6;
+    background: var(--summaryHighlight);
 }
 
 #toggleMode.activeModeButton {
-    background: #b8f5b8;
+    background: var(--activeModeBg);
 }
 
 /*#region toggle mode effects*/
@@ -1262,46 +1547,46 @@ button.disabled {
 
 /* edit mode */
 #toggleMode.editModeButton {
-    background: #fff3a6;
-    border: 3px solid #d6a800;
-    box-shadow: 0 0 8px rgba(255, 204, 0, 0.9);
+    background: var(--summaryHighlight);
+    border: 3px solid var(--editModeBorder);
+    box-shadow: 0 0 8px var(--editModeGlow);
 }
 
 #toggleMode.editModeButton:hover {
     transform: scale(1.05);
-    border-color: #ffcc00;
+    border-color: var(--editModeHover);
     box-shadow:
-        0 0 14px rgba(255, 204, 0, 1),
-        3px 3px 0 #8a6a00;
+        0 0 14px var(--editModeGlowStrong),
+        3px 3px 0 var(--editModeShadow);
 }
 
 #toggleMode.editModeButton:active {
     transform: scale(0.94);
     box-shadow:
-        inset 0 0 10px rgba(255, 170, 0, 0.9),
-        0 0 6px rgba(255, 170, 0, 0.9);
+        inset 0 0 10px var(--editModeInsetGlow),
+        0 0 6px var(--editModeInsetGlow);
 }
 
 /* active mode */
 #toggleMode.activeModeButton {
-    background: #b8f5b8;
-    border: 3px solid #208a20;
-    box-shadow: 0 0 8px rgba(50, 205, 50, 0.8);
+    background: var(--activeModeBg);
+    border: 3px solid var(--activeModeBorder);
+    box-shadow: 0 0 8px var(--activeModeGlow);
 }
 
 #toggleMode.activeModeButton:hover {
     transform: scale(1.04);
-    border-color: #32cd32;
+    border-color: var(--activeModeHover);
     box-shadow:
-        0 0 14px rgba(50, 205, 50, 1),
-        3px 3px 0 #126112;
+        0 0 14px var(--activeModeGlowStrong),
+        3px 3px 0 var(--activeModeShadow);
 }
 
 #toggleMode.activeModeButton:active {
     transform: scale(0.95);
     box-shadow:
-        inset 0 0 10px rgba(0, 128, 0, 0.9),
-        0 0 6px rgba(0, 128, 0, 0.9);
+        inset 0 0 10px var(--activeModeInsetGlow),
+        0 0 6px var(--activeModeInsetGlow);
 }
 
 /* pulse when mode changes */
@@ -1386,7 +1671,7 @@ button.disabled {
 .deleteX {
     position: absolute;
     font-size: 8rem;
-    color: red;
+    color: var(--red1);
     font-weight: 900;
 
     transform: translateY(-9px);
@@ -1405,13 +1690,13 @@ button.disabled {
 
 /* active delete mode (strong feedback) */
 #deleteTool.deleteActive {
-    border: 3px solid red;
-    background: rgba(255, 0, 0, 0.08);
-    filter: drop-shadow(0 0 6px red);
+    border: 3px solid var(--red1);
+    background: var(--deleteLight);
+    filter: drop-shadow(0 0 6px var(--red1));
 }
 
 #deleteTool.deleteActive .deleteX {
-    color: darkred;
+    color: var(--red4);
 }
 
 /* #endregion */
@@ -1640,7 +1925,7 @@ button.disabled {
     width: 165px;
     height: 53px;
 
-    border: 3px solid black;
+    border: 3px solid var(--black);
 
     /* grid line pattern */
     background-color: var(--apricot);
@@ -1670,15 +1955,15 @@ button.disabled {
 }
 
 #gridSnapToggle .textOutline{
-    color: black;
-    -webkit-text-stroke: .02px white;
+    color: var(--black);
+    -webkit-text-stroke: .02px var(--white);
 
     /* fallback using shadow */
     text-shadow:
-        -.01px -.01px 0 white,
-        .01px -.01px 0 white,
-        -.01px .01px 0 white,
-        .01px .01px 0 white,
+        -.01px -.01px 0 var(--white),
+        .01px -.01px 0 var(--white),
+        -.01px .01px 0 var(--white),
+        .01px .01px 0 var(--white),
 }
 
 #readjustGridText{
@@ -1718,9 +2003,9 @@ button.disabled {
     max-width: 90vw;
     padding: 1.5rem 1rem;
 
-    background: #f4f4f4;
-    border: 3px solid black;
-    box-shadow: 6px 6px 0 black;
+    background: var(--modalGray);
+    border: 3px solid var(--black);
+    box-shadow: 6px 6px 0 var(--black);
 }
 
 #iconBuilder,
@@ -1739,7 +2024,7 @@ button.disabled {
     font-weight: 900;
     letter-spacing: 0.5px;
 
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black);
     padding-bottom: 0.4rem;
 }
 
@@ -1757,7 +2042,7 @@ button.disabled {
     max-width: 360px;
 
     padding: 0.5rem 0 0.75rem;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black);
 }
 
 #iconTypeSwitch input {
@@ -1765,11 +2050,11 @@ button.disabled {
 }
 
 .iconTypeOption {
-    border: 2px solid black;
+    border: 2px solid var(--black);
     padding: 6px 14px;
 
-    background: #dcdcdc;
-    box-shadow: 2px 2px 0 black;
+    background: var(--modalButtonGray);
+    box-shadow: 2px 2px 0 var(--black);
 
     font-weight: 400;
     cursor: pointer;
@@ -1777,17 +2062,17 @@ button.disabled {
 }
 
 .iconTypeOption:hover {
-    background: #d0d0d0;
+    background: var(--modalButtonHoverGray);
 }
 
 .iconTypeOption.active {
-    background: #fff3a6;
-    border: 2px solid black;
+    background: var(--summaryHighlight);
+    border: 2px solid var(--black);
 
     font-weight: 900;
     opacity: 1;
 
-    box-shadow: inset 2px 2px 0 black;
+    box-shadow: inset 2px 2px 0 var(--black);
 }
 
 .iconTypeOption:not(.active) {
@@ -1806,15 +2091,15 @@ button.disabled {
     width: 100%;
     padding: 1rem 0 0.75rem;
 
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black);
 }
 
 #iconPreviewBox {
     width: 100px;
     height: 100px;
 
-    border: 2px solid black;
-    background: white;
+    border: 2px solid var(--black);
+    background: var(--white);
 
     display: flex;
     justify-content: center;
@@ -1843,7 +2128,7 @@ button.disabled {
     gap: 0.5rem 1rem;
 
     padding: 1rem 0 0.75rem;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black);
 }
 
 #shapeControls label[for="shapeSelect"] {
@@ -1879,7 +2164,7 @@ button.disabled {
     gap: 0.5rem 1rem;
 
     padding: 1rem 0 0.75rem;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black);
 }
 
 #iconSharedFields label[for="iconLabel"] {
@@ -1940,10 +2225,10 @@ button.disabled {
 #iconModal select,
 #iconModal input[type="text"],
 #iconModal input[type="url"] {
-    background: white;
-    border: 2px solid black;
+    background: var(--white);
+    border: 2px solid var(--black);
     border-radius: 4px;
-    box-shadow: 2px 2px 0 black;
+    box-shadow: 2px 2px 0 var(--black);
 
     min-height: 28px;
     font-weight: bold;
@@ -1952,7 +2237,7 @@ button.disabled {
 #iconModal select:focus,
 #iconModal input[type="text"]:focus,
 #iconModal input[type="url"]:focus {
-    outline: 2px solid #1E90FF;
+    outline: 2px solid var(--blue3);
     outline-offset: 2px;
 }
 
@@ -1969,10 +2254,10 @@ button.disabled {
 }
 
 .colorPickerRow button {
-    background: #e0e0e0;
-    border: 2px solid black;
+    background: var(--gray2);
+    border: 2px solid var(--black);
     border-radius: 4px;
-    box-shadow: 2px 2px 0 black;
+    box-shadow: 2px 2px 0 var(--black);
 
     padding: 4px 8px;
 
@@ -1981,9 +2266,9 @@ button.disabled {
 }
 
 .colorPickerRow button:hover {
-    background: #d0d0d0;
+    background: var(--modalButtonHoverGray);
     transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0 black;
+    box-shadow: 1px 1px 0 var(--black);
 }
 
 .colorPreview {
@@ -1991,7 +2276,7 @@ button.disabled {
     height: 22px;
 
     border-radius: 50%;
-    border: 2px solid black;
+    border: 2px solid var(--black);
 
     flex-shrink: 0;
 }
@@ -2016,7 +2301,7 @@ button.disabled {
     align-items: center;
 
     padding: 1rem 0 0.75rem;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--black);
 }
 
 #uploadHelp {
@@ -2040,27 +2325,27 @@ button.disabled {
     min-width: 105px;
     min-height: 34px;
 
-    border: 2px solid black;
+    border: 2px solid var(--black);
     border-radius: 4px;
-    box-shadow: 3px 3px 0 black;
+    box-shadow: 3px 3px 0 var(--black);
 
     font-weight: bold;
     cursor: pointer;
 }
 
 #cancelIconCreate {
-    background: #c0c0c0;
-    color: black;
+    background: var(--gray3);
+    color: var(--black);
 }
 
 #createIconConfirm {
-    background: #32CD32;
-    color: black;
+    background: var(--green2);
+    color: var(--black);
 }
 
 #iconModalActions button:hover {
     transform: translate(1px, 1px);
-    box-shadow: 2px 2px 0 black;
+    box-shadow: 2px 2px 0 var(--black);
 }
 
 #iconModalActions button:active,
@@ -2081,7 +2366,7 @@ button.disabled {
 .colorPreview {
     width: 25px;
     height: 25px;
-    border: 2px solid black;
+    border: 2px solid var(--black);
     border-radius: 50%;
     display: inline-block;
 }
@@ -2100,7 +2385,7 @@ a {
 #iconModalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--overlayDark);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2108,7 +2393,7 @@ a {
 }
 
 #iconModal {
-    background: white;
+    background: var(--white);
     padding: 1.5rem;
     border-radius: 12px;
     width: 500px;
@@ -2151,7 +2436,7 @@ a {
 }
 
 #dashboard.deleteMode .iconWrapper:hover {
-    filter: drop-shadow(0 0 8px red);
+    filter: drop-shadow(0 0 8px var(--red1));
 }
 
 #dashboard.deleteMode .iconWrapper {
@@ -2197,7 +2482,7 @@ a {
 .iconShape.triangle-up {
     width: 54px;
     height: 54px;
-    background-color: #3498db;
+    background-color: var(--shapeBlue);
     clip-path: polygon(50% 8%, 8% 92%, 92% 92%);
 }
 
@@ -2205,7 +2490,7 @@ a {
 .iconShape.triangle-down {
     width: 54px;
     height: 54px;
-    background-color: #e74c3c;
+    background-color: var(--shapeRed);
     clip-path: polygon(8% 8%, 92% 8%, 50% 92%);
 }
 
@@ -2213,7 +2498,7 @@ a {
 .iconShape.triangle-left {
     width: 54px;
     height: 54px;
-    background-color: #2ecc71;
+    background-color: var(--shapeGreen);
     clip-path: polygon(8% 50%, 92% 8%, 92% 92%);
 }
 
@@ -2221,7 +2506,7 @@ a {
 .iconShape.triangle-right {
     width: 54px;
     height: 54px;
-    background-color: #f1c40f;
+    background-color: var(--shapeYellow);
     clip-path: polygon(8% 8%, 92% 50%, 8% 92%);
 }
 
@@ -2229,14 +2514,14 @@ a {
 .iconShape.square {
     width: 50px;
     height: 50px;
-    background-color: #00FF00;
+    background-color: var(--lime);
 }
 
 /* Diamond */
 .iconShape.diamond {
     width: 50px;
     height: 50px;
-    background-color: #3498db;
+    background-color: var(--shapeBlue);
     clip-path: polygon(50% 8%, 92% 50%, 50% 92%, 8% 50%);
 }
 
@@ -2244,14 +2529,14 @@ a {
 .iconShape.rectangle {
     width: 54px;
     height: 40px;
-    background-color: #9b59b6;
+    background-color: var(--shapePurple);
 }
 
 /* Circle */
 .iconShape.circle {
     width: 50px;
     height: 50px;
-    background-color: #e67e22;
+    background-color: var(--shapeOrange);
     border-radius: 50%;
 }
 
@@ -2259,7 +2544,7 @@ a {
 .iconShape.oval {
     width: 54px;
     height: 40px;
-    background-color: #1abc9c;
+    background-color: var(--shapeTeal);
     border-radius: 50%;
 }
 
@@ -2267,7 +2552,7 @@ a {
 .iconShape.star {
     width: 54px;
     height: 54px;
-    background-color: gold;
+    background-color: var(--gold);
     clip-path: polygon(
         50% 4%,
         61% 35%,
@@ -2286,7 +2571,7 @@ a {
 .iconShape.hexagon {
     width: 54px;
     height: 50px;
-    background-color: #e74c3c;
+    background-color: var(--shapeRed);
     clip-path: polygon(
         25% 6%,
         75% 6%,
@@ -2301,7 +2586,7 @@ a {
 .iconShape.plus {
     width: 50px;
     height: 50px;
-    background-color: #2c3e50;
+    background-color: var(--shapeDark);
     clip-path: polygon(
         35% 0%,
         65% 0%,
@@ -2322,7 +2607,7 @@ a {
 .iconShape.x {
     width: 50px;
     height: 50px;
-    background-color: red;
+    background-color: var(--red1);
     clip-path: polygon(
         20% 0%,
         50% 30%,
@@ -2348,8 +2633,8 @@ a {
     z-index: 999999;
 
     padding: 3px 6px;
-    background: rgba(20, 20, 20, 0.75);
-    color: white;
+    background: var(--tooltipDark);
+    color: var(--white);
 
     font-size: 0.7rem;
     font-weight: 600;
@@ -2397,11 +2682,11 @@ a {
 }
 
 #toggleTipsBtn.tipsOn {
-    background: #fff3a6; /* same vibe as edit mode */
+    background: var(--summaryHighlight); /* same vibe as edit mode */
 }
 
 #toggleTipsBtn.tipsOff {
-    background: #e0e0e0;
+    background: var(--gray2);
     opacity: 0.8;
 }
 
@@ -2478,9 +2763,9 @@ a {
 
 .external {
     padding: 3px;
-    background-color: green;
-    border: 2px solid yellow;
-    color: white;
+    background-color: var(--green3);
+    border: 2px solid var(--yellow1);
+    color: var(--white);
 
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
@@ -2489,7 +2774,7 @@ a {
 /* hover = slight lift / brightness */
 .external:hover {
     transform: translate(-1px, -1px);
-    box-shadow: 2px 2px 0 black;
+    box-shadow: 2px 2px 0 var(--black);
     filter: brightness(1.1);
 }
 
@@ -2505,7 +2790,7 @@ a {
 #storageModalOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--overlayDark);
 
     display: flex;
     justify-content: center;
@@ -2516,7 +2801,7 @@ a {
 
 /* modal box */
 #storageModal {
-    background: white;
+    background: var(--white);
     padding: 1.25rem;
     border-radius: 12px;
 
@@ -2543,10 +2828,10 @@ a {
     padding: 6px;
     font-size: 0.9rem;
 
-    color: #444;               /* slightly gray text */
-    background: #f9f9f9;
+    color: var(--textareaText);               /* slightly gray text */
+    background: var(--textareaBg);
 
-    border: 2px solid #000;
+    border: 2px solid var(--black);
     border-radius: 6px;
 
     overflow-y: auto;
@@ -2586,7 +2871,7 @@ a {
 .overlay {
     position: fixed;
     inset: 0; /* full screen */
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--overlayDark);
 
     display: flex;
     justify-content: center;
