@@ -2,8 +2,8 @@
 
 // #region Global State */
 const icons = [];
-
 let iconCount = 0;
+
 let editMode = true;
 let deleteMode = false;
 let gridSnap = false;
@@ -17,7 +17,7 @@ let xDashboardMax = window.innerWidth - 200;
 let yDashboardMin = 80;
 let yDashboardMax = window.innerHeight - 190;
 
-
+let changedDashboardBgColor = false;
         
 let gridCellx = 170;
 let gridCelly = 170;
@@ -36,6 +36,9 @@ const container_topBar = $("#topBar");
 const container_sidebar = $("#dashboardSidebar");
 const container_dashboard = $("#dashboard");
 const container_fullDashboard = $("#fullDashboard");
+
+const overlay_onboardingModal = $("#onboardingModalOverlay");
+const button_closeOnboarding = $("#closeOnboarding");
 
 const container_externalButtons = $("#externalButtons");
 
@@ -114,13 +117,17 @@ $(document).ready(function() {
 function setup_dashboardStart() {
     setup_dashboardInitialState();
     setup_defaultPreviews();
+    
+    setup_onboarding();
 
     setup_importExport();
     setup_sidebar();
     setup_iconModal();
     setup_iconCreationControls();
     setup_globalCloseControls();
+
     setup_cursorTooltip();
+    setup_buttonTooltips();
     setup_toggleTips();
 
     setup_beforeUnloadWarning();
@@ -130,6 +137,16 @@ function setup_dashboardStart() {
     update_fullscreenButtonColor();
 
     $(window).resize(setFullHeight);
+}
+
+function setup_onboarding() {
+    if (!localStorage.getItem("onboardingCompleted")) {
+        overlay_onboardingModal.removeClass("hidden");
+    }
+
+    button_closeOnboarding.on("click", function() {
+        overlay_onboardingModal.addClass("hidden");
+    });
 }
 
 function setup_dashboardInitialState() {
@@ -193,6 +210,93 @@ function setup_cursorTooltip() {
         tooltip.css("opacity", "0");
     });
 }
+
+
+function setup_buttonTooltips() {
+    const tooltip = $("#cursorTooltip");
+
+    const buttonTooltips = {
+        "#bgColorButton": function() {
+            return "Change the dashboard background color";
+        },
+
+        "#toggleMode": function() {
+            return editMode ? "Switch to Active Mode" : "Switch to Edit Mode";
+        },
+
+        "#addIcon": function() {
+            return "Create a new website icon";
+        },
+
+        "#deleteTool": function() {
+            return deleteMode ? "Cancel delete mode" : "Click Delete icons from the dashboard";
+        },
+
+        "#load": function() {
+            return "Load your last saved dashboard layout";
+        },
+
+        "#save": function() {
+            return "Save your current dashboard layout";
+        },
+
+        "#clearBoard": function() {
+            return "Remove all icons from the dashboard";
+        },
+
+        "#gridSnapToggle": function() {
+            return gridSnap ? "Switch to Freeform icon movement" : "Switch to Snap icon movement";
+        },
+
+        "#fullscreenBtn": function() {
+            return isFullScreen ? "Return to windowed dashboard" : "Expand the dashboard area";
+        },
+
+        "#exportButton": function() {
+            return "Copy your Web Desk data for backup or moving layouts";
+        },
+
+        "#importButton": function() {
+            return "Paste exported Web Desk data back into the app";
+        },
+
+        "#toggleTipsBtn": function() {
+            return showTips ? "Turn hover tips off" : "Turn hover tips on";
+        }
+    };
+
+    Object.keys(buttonTooltips).forEach(function(selector) {
+        $(document).on("mouseenter", selector, function(e) {
+            if (!showTips && selector !== "#toggleTipsBtn") return;
+
+            tooltip.text(buttonTooltips[selector]());
+
+            tooltip.css({
+                opacity: "1",
+                left: e.clientX + "px",
+                top: e.clientY + "px"
+            });
+        });
+
+        $(document).on("mousemove", selector, function(e) {
+            if (!showTips && selector !== "#toggleTipsBtn") return;
+
+            tooltip.css({
+                left: e.clientX + "px",
+                top: e.clientY + "px"
+            });
+        });
+
+        $(document).on("mouseleave", selector, function() {
+            tooltip.css("opacity", "0");
+        });
+
+        $(document).on("click", selector, function() {
+            tooltip.css("opacity", "0");
+        });
+    });
+}
+
 
 function setup_toggleTips() {
     button_toggleTips.on("click", function() {
@@ -387,6 +491,8 @@ function action_on_backgroundButton() {
 }
 
 function action_on_backgroundColorChange() {
+    changedDashboardBgColor = true;
+
     const color = $(this).val();
 
     container_dashboard.css("background-color", color);
@@ -1071,8 +1177,11 @@ function save_currentDashboard_layout() {
     const iconString = JSON.stringify(icons);
     const bgColor = input_bgColor.val();
 
+    localStorage.setItem("onboardingCompleted", true)
     localStorage.setItem("dashboardIcons", iconString);
-    localStorage.setItem("dashboardBgColor", bgColor);
+    if(changedDashboardBgColor){
+        localStorage.setItem("dashboardBgColor", bgColor);
+    }
 
     console.log(icons);
 }
@@ -1112,6 +1221,7 @@ function load_previousDashboard_layout() {
 }
 
 // #endregion
+
 
 // #region Fullscreen
 

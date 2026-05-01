@@ -2864,7 +2864,298 @@ a {
 /*#endregion*/
 
 
+/* #region Onboarding Modal */
 
+#onboardingModalOverlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--overlayDark);
+    z-index: 4000;
+}
+
+#onboardingModalOverlayAboutPage {
+    position:relative;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 4000;
+}
+#onboardingModalOverlayAboutPage #onboardingModal {
+    max-height: none;
+
+}
+
+#onboardingModal {
+    width: 1050px;
+    max-width: 92vw;
+    max-height: 82vh;
+    overflow-y: auto;
+
+    padding: 0.6rem;
+
+    background: var(--blue2);
+    border: 4px solid var(--black);
+    border-right: 8px solid var(--blue3);
+    border-bottom: 8px solid var(--blue3);
+    box-shadow: 10px 10px 0 var(--gray3);
+
+    text-align: center;
+}
+
+/* Header */
+#onboardingHeader {
+    padding: 1rem 1.25rem 0.9rem 1.25rem;
+
+    background: linear-gradient(180deg, var(--white) 0%, var(--summaryHeroLight) 100%);
+    border: 3px solid var(--black);
+    border-bottom: none;
+}
+
+#onboardingModalTitle {
+    margin-bottom: 0.45rem;
+
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 0.95;
+
+    color: var(--black);
+    text-shadow:
+        2px 2px 0 var(--blue2),
+        4px 4px 0 var(--gray3);
+}
+
+#onboardingTagline {
+    display: inline-block;
+    margin: 0 auto;
+
+    padding: 0.45rem 0.9rem;
+
+    background: var(--summaryHighlight);
+    border: 3px solid var(--black);
+    box-shadow: 3px 3px 0 var(--black);
+
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+/* Main content */
+#onboardingContent {
+    padding: 1.1rem 1.4rem 1rem 1.4rem;
+
+    background: var(--white);
+    border: 3px solid var(--black);
+
+    text-align: left;
+}
+
+#onboardingContent strong {
+    font-weight: 900;
+}
+
+/* Intro banner */
+#onboardingIntro {
+    max-width: 600px;
+    margin: 0 auto 0.9rem auto;
+    padding: 0.75rem 0.95rem;
+
+    background: var(--summaryHeroLight);
+    border-left: 8px solid var(--blue3);
+    border-right: 8px solid var(--blue3);
+    box-shadow: 3px 3px 0 var(--gray3);
+
+    font-size: 1rem;
+    line-height: 1.35;
+    text-align: center;
+}
+
+/* Main two-column area */
+#onboardingModeColumns {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 0.9rem;
+}
+
+#onboardingEditMode,
+#onboardingActiveMode {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0.85rem 1rem;
+
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--gray3);
+}
+
+#onboardingEditMode {
+    background: var(--summaryWorkflowLight);
+    border-left: 10px solid var(--yellow2);
+}
+
+#onboardingActiveMode {
+    background: var(--summaryFeatureLight);
+    border-left: 10px solid var(--green2);
+}
+
+#onboardingEditMode h3,
+#onboardingActiveMode h3 {
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.2rem;
+
+    display: inline-block;
+
+    font-size: 1.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+
+    border-bottom: 3px solid var(--black);
+}
+
+#onboardingEditList p,
+#onboardingActiveList p {
+    margin-bottom: 0.38rem;
+
+    font-size: 0.9rem;
+    line-height: 1.25;
+}
+
+#onboardingEditList p:last-child,
+#onboardingActiveList p:last-child {
+    margin-bottom: 0;
+}
+
+/* Bottom callout notes */
+#onboardingNotes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    margin-top: 0.85rem;
+}
+
+#onboardingNotes Strong{
+    display: block;
+}
+
+#onboardingNotes p {
+    margin: 0;
+    padding: 0.75rem 0.85rem;
+
+    background: var(--gray1);
+    border: 3px solid var(--black);
+    box-shadow: 3px 3px 0 var(--gray3);
+
+    font-size: 0.92rem;
+    line-height: 1.3;
+}
+
+#onboardingNotes span{
+    font-weight: 800;
+}
+/* Button area */
+#onboardingActions {
+    padding: 0.75rem 1.25rem 0.85rem 1.25rem;
+
+    background: var(--white);
+    border: 3px solid var(--black);
+    border-top: none;
+}
+
+#onboardingNotes #onboardBuild {
+    border-left: 5px solid var(--orange1);
+}
+
+#onboardingNotes #onboardWorkflow {
+    border-left: 5px solid var(--purple3);
+}
+
+#onboardingNotes #onboardBackup {
+    border-left: 5px solid var(--teal);
+}
+
+
+#closeOnboarding {
+    min-width: 200px;
+    min-height: 42px;
+    padding: 0.35rem 1rem;
+
+    color: var(--black);
+    background: var(--blue2);
+
+    border: 3px solid var(--black);
+    box-shadow: 4px 4px 0 var(--black);
+
+    font-size: 1rem;
+    font-weight: 900;
+
+    cursor: pointer;
+}
+
+#closeOnboarding:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--black);
+}
+
+#closeOnboarding:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+/* Responsive */
+@media screen and (max-width: 950px) {
+    #onboardingModal {
+        width: 90vw;
+        max-height: 90vh;
+    }
+
+    #onboardingModalTitle {
+        font-size: 2.5rem;
+    }
+
+    #onboardingModeColumns {
+        flex-direction: column;
+    }
+
+    #onboardingNotes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 625px) {
+    #onboardingModal {
+        padding: 0.5rem;
+    }
+
+    #onboardingHeader,
+    #onboardingContent,
+    #onboardingActions {
+        padding: 0.9rem;
+    }
+
+    #onboardingModalTitle {
+        font-size: 2.2rem;
+    }
+
+    #onboardingTagline {
+        font-size: 1.1rem;
+    }
+
+    #onboardingIntro,
+    #onboardingEditList p,
+    #onboardingActiveList p,
+    #onboardingNotes p {
+        font-size: 0.9rem;
+    }
+}
+
+/* #endregion */
 
 
 /*overlay to close the windowed sections*/
