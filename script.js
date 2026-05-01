@@ -123,6 +123,8 @@ function setup_dashboardStart() {
     setup_cursorTooltip();
     setup_toggleTips();
 
+    setup_beforeUnloadWarning();
+
     update_buttons();
     update_modeUI();
     update_fullscreenButtonColor();
@@ -209,6 +211,67 @@ function updateTipsButton() {
         .toggleClass("tipsOn", showTips)
         .toggleClass("tipsOff", !showTips);
 }
+
+// #region Unload prevention without saving 
+function setup_beforeUnloadWarning() {
+    window.addEventListener("beforeunload", function(e) {
+        if (icons.length > 0 && icons_changedFromSave()) {
+            e.preventDefault();
+            e.returnValue = "";
+        }
+    });
+}
+
+function icons_changedFromSave() {
+    const savedIconsString = localStorage.getItem("dashboardIcons");
+
+    if (!savedIconsString) {
+        return icons.length > 0;
+    }
+
+    let savedIcons;
+
+    try {
+        savedIcons = JSON.parse(savedIconsString);
+    } catch (e) {
+        return icons.length > 0;
+    }
+
+    if (savedIcons.length !== icons.length) {
+        return true;
+    }
+
+    const pixelTolerance = 20;
+
+    for (let i = 0; i < icons.length; i++) {
+        const currentIcon = icons[i];
+        const savedIcon = savedIcons[i];
+
+        if (
+            currentIcon.id !== savedIcon.id ||
+            currentIcon.name !== savedIcon.name ||
+            currentIcon.url !== savedIcon.url ||
+            currentIcon.type !== savedIcon.type ||
+            currentIcon.shape !== savedIcon.shape ||
+            currentIcon.shapeColor !== savedIcon.shapeColor ||
+            currentIcon.textColor !== savedIcon.textColor ||
+            currentIcon.imgSrc !== savedIcon.imgSrc
+        ) {
+            return true;
+        }
+
+        const xDifferent = Math.abs(currentIcon.x - savedIcon.x) > pixelTolerance;
+        const yDifferent = Math.abs(currentIcon.y - savedIcon.y) > pixelTolerance;
+
+        if (xDifferent || yDifferent) {
+            return true;
+        }
+    }
+
+    return false;
+}
+//#endregion
+
 // #endregion
 
 
@@ -297,6 +360,8 @@ function action_on_storageImport() {
         alert("Error: Invalid data. Your previous settings have been restored.");
     }
 }
+
+
 
 // #endregion
 
