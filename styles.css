@@ -1969,6 +1969,7 @@ button.disabled {
 #readjustGridText{
     display: block;
     transform: translateY(-0.5px);
+    text-wrap: nowrap;
 }
 
 /* #endregion */
