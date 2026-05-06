@@ -71,8 +71,10 @@ const input_iconImageUpload = $("#iconImageUpload");
 const container_shapeControls = $("#shapeControls");
 const container_imageControls = $("#imageControls");
 
+const preview_iconBox = $("#iconPreviewBox");
 const preview_iconShape = $("#iconPreviewShape");
 const preview_iconImage = $("#iconPreviewImage");
+const preview_iconLabel = $("#iconPreviewLabel");
 
 const select_shape = $("#shapeSelect");
 
@@ -173,10 +175,34 @@ function setup_dashboardInitialState() {
     }
 }
 
+
 function setup_defaultPreviews() {
     preview_shapeColor.css("background-color", input_shapeColor.val());
     preview_textColor.css("background-color", input_textColor.val());
+
+    update_iconPreview();
 }
+
+function update_iconPreview() {
+    const dashboardBgColor = container_dashboard.css("background-color");
+    const labelText = input_iconLabel.val().trim() || "Label";
+    const textColor = input_textColor.val();
+    const shapeColor = input_shapeColor.val();
+    const selectedShape = select_shape.val();
+
+    preview_iconBox.css("background-color", dashboardBgColor);
+
+    preview_iconLabel
+        .text(labelText)
+        .css("color", textColor);
+
+    preview_iconShape.css("background-color", shapeColor);
+
+    if (!preview_iconShape.hasClass(selectedShape)) {
+        preview_iconShape.attr("class", "iconShape " + selectedShape);
+    }
+}
+
 
 function setup_cursorTooltip() {
     const tooltip = $("#cursorTooltip");
@@ -497,6 +523,8 @@ function action_on_backgroundColorChange() {
 
     container_dashboard.css("background-color", color);
     button_bgColor.css("background-color", color);
+
+    update_iconPreview();
 }
 
 function setup_modeButton() {
@@ -667,6 +695,7 @@ function setup_iconCreationControls() {
     setup_imageUploadPreview();
     setup_colorPickers();
     setup_shapePicker();
+    setup_iconLabelPreview();
 }
 
 function setup_iconTypeSwitch() {
@@ -692,6 +721,8 @@ function action_on_iconTypeChange() {
 
     $(".iconTypeOption").removeClass("active");
     $(this).closest(".iconTypeOption").addClass("active");
+
+    update_iconPreview();
 }
 
 function setup_imageUploadPreview() {
@@ -709,6 +740,8 @@ function action_on_iconImageUpload(e) {
                 .removeClass("hidden");
 
             preview_iconShape.addClass("hidden");
+
+            update_iconPreview();
         })
         .catch(function(error) {
             console.error(error);
@@ -723,12 +756,17 @@ function setup_colorPickers() {
 
     input_shapeColor.on("input", function() {
         const color = $(this).val();
+
         preview_shapeColor.css("background-color", color);
         preview_iconShape.css("background-color", color);
+
+        update_iconPreview();
     });
 
     input_textColor.on("input", function() {
         preview_textColor.css("background-color", $(this).val());
+
+        update_iconPreview();
     });
 }
 
@@ -738,6 +776,8 @@ function setup_shapePicker() {
         preview_iconShape
             .attr("class", "iconShape " + $(this).val())
             .css("background-color", input_shapeColor.val());
+
+        update_iconPreview();
     });
 }
 
@@ -776,6 +816,8 @@ function clear_iconCreation() {
 
     input_iconLabel.val("");
     input_iconLink.val("");
+
+    update_iconPreview();
 }
 
 function open_iconEditModal(iconId) {
@@ -824,7 +866,14 @@ function open_iconEditModal(iconId) {
             .addClass("hidden");
     }
 
+
+    update_iconPreview();
+    
     input_iconImageUpload.val("");
+}
+
+function setup_iconLabelPreview() {
+    input_iconLabel.on("input", update_iconPreview);
 }
 
 function action_on_createIconConfirm() {
